@@ -1,0 +1,19 @@
+{
+  "name": "prismium",
+  "version": "@version",
+  "description": "@description",
+  "type": "module",
+  "main": "index.mjs",
+  "module": "index.mjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koirodev/prismium.git"
+  },
+  "keywords": "@keywords",
+  "author": "@author",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koirodev/prismium/issues"
+  },
+  "homepage": "@homepage"
+}

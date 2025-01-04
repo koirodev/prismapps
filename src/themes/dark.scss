@@ -1,0 +1,149 @@
+@import "../core/scss/_mixins.scss";
+
+.prismium_dark {
+  --prismium-background-color-active: #50505023;
+  --prismium-background-color-disabled: #3A3A3A;
+  --prismium-background-color-hover: #0E0E0E;
+  --prismium-background-color-primary: #2B2B2B;
+  --prismium-border-color-primary: #3A3A3A;
+  --prismium-border-radius: 12px;
+  --prismium-border-width: 1px;
+  --prismium-content-gap: 20px;
+  --prismium-content-offset: 20px;
+  --prismium-current-gap: 20px;
+  --prismium-font-primary: 500 20px/1.2 sans-serif;
+  --prismium-font-secondary: 500 16px/1.2 sans-serif;
+  --prismium-gap: 10px;
+  --prismium-icon-color-hover: #56E6DE;
+  --prismium-icon-color-primary: var(--prismium-text-color-primary);
+  --prismium-icon-size: 24px;
+  --prismium-link-color-hover: #FCB0FC;
+  --prismium-link-color-primary: #56E6DE;
+  --prismium-link-decoration: underline;
+  --prismium-padding: 12px;
+  --prismium-text-color-primary: #DFDFDF;
+  --prismium-text-color-secondary: #B3B3B3;
+
+  margin-top: var(--prismium-gap);
+
+  padding: var(--prismium-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  color: var(--prismium-text-color-primary);
+  font: var(--prismium-font-primary);
+
+  background-color: var(--prismium-background-color-primary);
+  border: solid var(--prismium-border-width) var(--prismium-border-color-primary);
+  border-radius: var(--prismium-border-radius);
+
+  transition: background-color calc(var(--prismium-speed) * 2) var(--prismium-ease);
+
+  @media (any-hover: hover) {
+    &:has(> .prismium__current:hover:not(:disabled)) {
+      background-color: var(--prismium-background-color-hover);
+    }
+  }
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+
+  &.js-prismium-active {
+    background-color: var(--prismium-background-color-active);
+
+    & .prismium__content {
+      &::before {
+        width: 100%;
+      }
+    }
+  }
+
+  & a[href] {
+    color: var(--prismium-link-color-primary);
+    text-decoration-color: inherit;
+    text-decoration-line: var(--prismium-link-decoration);
+    text-decoration-style: var(--contacts-link-decoration);
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1px;
+    text-underline-position: from-font;
+
+    transition: color var(--prismium-speed) var(--prismium-ease);
+
+    @include hover {
+      color: var(--prismium-link-color-hover);
+    }
+  }
+
+  & .prismium {
+    &__current {
+      margin: 0;
+
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: var(--prismium-current-gap);
+
+      color: inherit;
+      font: inherit;
+      text-align: start;
+
+      &:disabled {
+        opacity: 0.6;
+
+        cursor: not-allowed;
+
+        & .prismium__icon {
+          fill: var(--prismium-icon-color-primary);
+        }
+      }
+    }
+
+    &__icon {
+      width: var(--prismium-icon-size);
+      height: var(--prismium-icon-size);
+      flex-shrink: 0;
+
+      fill: var(--prismium-icon-color-primary);
+
+      @include hover {
+        fill: var(--prismium-icon-color-hover);
+      }
+    }
+
+    &__content {
+      position: relative;
+
+      padding-top: var(--prismium-content-offset);
+
+      color: var(--prismium-text-color-secondary);
+      font: var(--prismium-font-secondary);
+
+      &::before {
+        content: "";
+
+        position: absolute;
+        top: calc(var(--prismium-content-offset, 20px) / 2);
+        right: 0;
+
+        width: 0;
+        height: var(--prismium-border-width);
+
+        background-color: var(--prismium-border-color-primary);
+
+        transition: width var(--prismium-speed) var(--prismium-ease);
+      }
+
+      & > * + .prismium:first-of-type {
+        margin-top: calc(var(--prismium-gap) * 2);
+      }
+
+      & .prismium {
+        margin-top: var(--prismium-gap);
+      }
+    }
+  }
+}

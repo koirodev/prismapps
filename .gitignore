@@ -1,0 +1,17 @@
+# Misc
+.DS_Store
+.fleet
+.idea
+.github
+.git
+.vscode
+__MACOSX
+
+node_modules
+dist
+demos
+
+# Local env files
+.env
+.env.*
+!.env.example

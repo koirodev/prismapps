@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "npx gulp",
-    "dev": "npx gulp dev"
+    "dev": "npx gulp dev",
+    "test": "clear && npx mocha tests/**/*.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,8 @@
     "gulp-rollup": "^2.17.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-watch": "^5.0.1",
+    "jsdom": "^25.0.1",
+    "mocha": "^11.0.1",
     "npm": "^10.9.0",
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",

@@ -1,3 +1,4 @@
+import { PrismiumError } from "./errors/PrismiumError.mjs";
 import { deepMerge } from "../utils/deepMerge.mjs";
 
 import { DOMManager } from "./managers/DOMManager.mjs";
@@ -16,11 +17,12 @@ const prototypes = {
   eventsEmitter,
   actions,
   batchOperations,
-  destroy
+  destroy,
 };
 
 class Prismium {
   static __modules__ = new Map();
+  static __instances__ = new Map();
 
   // Использовать модуль | Use a module
   static use(module) {
@@ -30,7 +32,7 @@ class Prismium {
     }
 
     if (!module || !module.name) {
-      throw new Error("Module must have a name");
+      throw new PrismiumError("Module must have a name");
     }
 
     this.__modules__.set(module.name, module);
@@ -41,27 +43,40 @@ class Prismium {
     let el, options;
 
     // Проверка аргументов конструктора | Check constructor arguments
-    if (args.length === 1 && args[0].constructor && Object.prototype.toString.call(args[0]).slice(8, -1) === "Object") {
+    if (args.length === 1
+      && args[0].constructor
+      && Object.prototype.toString.call(args[0]).slice(8, -1) === "Object") {
       options = args[0];
     } else {
       [el, options] = args;
     }
 
-    if (!options)
+    if (!options) {
       options = {};
+    }
 
     options = deepMerge({}, options);
 
-    if (el && !options.el)
+    if (el && !options.el) {
       options.el = el;
+    }
+    
+    if (!this.el) {
+      this.el = options.el;
+    }
 
     // Обработка строкового селектора | Handle string selector
-    if (options.el && typeof options.el === "string") {
-      const prismiumArray = [];
-
-      document.querySelectorAll(options.el).forEach((el) => {
-        const newOptions = deepMerge({}, options, { el: el });
-        prismiumArray.push(new Prismium(newOptions));
+    if (this.el && typeof this.el === "string") {
+      const elements = document.querySelectorAll(this.el);
+      const prismiumArray = Array.from(elements).map(el => {
+        // Проверяем, есть ли уже инициализированный экземпляр | Check if instance is already initialized
+        if (Prismium.__instances__.has(el)) {
+          return Prismium.__instances__.get(el);
+        }
+        const newOptions = deepMerge({}, options, { el }); // Удаляем init: true | Remove init: true
+        const instance = new Prismium(newOptions);
+        Prismium.__instances__.set(el, instance);
+        return instance;
       });
 
       return new Proxy(prismiumArray, {
@@ -97,6 +112,7 @@ class Prismium {
     this.__prismium__ = true;
     this.eventsListeners = {};
     this.eventsAnyListeners = [];
+    this.__modules__ = new Map();
 
     // Регистрация событий | Register events
     if (this.options && this.options.on) {
@@ -111,38 +127,49 @@ class Prismium {
     this.destroyed = false;
     this.initialized = false;
     this.opened = false;
-    this.el = null;
 
     this.domManager = new DOMManager();
     this.iconManager = new IconManager();
     this.timerManager = new TimerManager();
-    this.__modules__ = new Map();
 
-    // Установка модулей | Install modules
-    Prismium.__modules__.forEach((module, name) => {
-      if (typeof module.install === "function") {
-        try {
-          module.install(this);
-          this.__modules__.set(name, module);
-        } catch (error) {
-          console.error(`Failed to install module ${name}:`, error);
+    // Установка модулей перед монтированием и инициализацией | Setup modules before mounting and initializing
+    const moduleSetupPromise = Promise.resolve().then(() => {
+      Prismium.__modules__.forEach((module, name) => {
+        if (typeof module.install === "function") {
+          try {
+            module.install(this);
+            this.__modules__.set(name, module);
+          } catch (error) {
+            throw new PrismiumError(`Failed to install module ${name}`, error);
+          }
         }
+      });
+
+      // Монтирование элемента только если указан el | Mount element only if el is specified
+      if (this.options.el) {
+        this.mount(this.options.el);
+      }
+
+      // Инициализация только после установки модулей | Initialize only after modules are installed
+      if (this.options.init === true) {
+        this.init();
       }
     });
 
-    // Монтирование элемента | Mount element
-    if (this.options.el) {
-      this.mount(this.options.el);
-    }
-
-    // Инициализация | Initialization
-    if (this.options.init) {
-      this.init();
-    }
+    // Сохраняем промис для возможной проверки завершения инициализации | Save promise for possible initialization check
+    this.__initPromise = moduleSetupPromise;
   }
 
   // Монтирование элемента | Mount element
   mount(el) {
+    if (!el) {
+      throw new PrismiumError("Element is required");
+    }
+
+    if (!(el instanceof Element)) {
+      throw new PrismiumError("Invalid element type");
+    }
+
     if (typeof el === "string") {
       const elements = document.querySelectorAll(el);
       if (elements.length > 1) {
@@ -156,22 +183,84 @@ class Prismium {
   }
 
   // Инициализация | Initialization
-  init() {
-    if (this.initialized && !this.destroyed) return this;
-    if (!this.el) return this;
+  init(el = this.el) {
+    if (this.initialized) {
+      return `this`;
+    }
 
+    if (!el) {
+      throw new PrismiumError("Element is required");
+    }
+
+    if (!(el instanceof Element)) {
+      throw new PrismiumError("Invalid element type");
+    }
+
+    this.destroyed = false;
     this.emit("beforeInit");
 
+    // Проверяем существующий экземпляр
+    const existingInstance = Prismium.__instances__.get(el) || el.__prismiumInstance__;
+    if (existingInstance) {
+      if (existingInstance.destroyed) {
+        Object.assign(this, {
+          options: existingInstance.options,
+          eventsListeners: existingInstance.eventsListeners,
+          eventsAnyListeners: existingInstance.eventsAnyListeners,
+          __modules__: existingInstance.__modules__
+        });
+
+        Prismium.__instances__.set(el, this);
+      } else if (existingInstance.initialized) {
+        return existingInstance;
+      }
+    }
+
     try {
-      if (this.destroyed || !this.domManager || !this.iconManager || !this.timerManager) {
-        this.domManager = new DOMManager();
-        this.iconManager = new IconManager();
-        this.timerManager = new TimerManager();
-        this.destroyed = false;
-        this.initialized = false;
+      this.domManager = new DOMManager();
+      this.iconManager = new IconManager();
+      this.timerManager = new TimerManager();
+
+      // Восстанавливаем опции если они были очищены | Restore options if they were cleared
+      if (!this.options) {
+        this.options = { ...defaultOptions };
       }
 
-      this.domManager.setup(this, this.el);
+      // Восстанавливаем слушатели событий если они были уничтожены | Restore event listeners if they were destroyed
+      if (!this.eventsListeners) {
+        this.eventsListeners = {};
+      }
+      if (!this.eventsAnyListeners) {
+        this.eventsAnyListeners = [];
+      }
+
+      // Если это существующий экземпляр, восстанавливаем его слушатели | If it's an existing instance, restore its listeners
+      const existingInstance = el.__prismiumInstance__;
+      if (existingInstance && existingInstance.eventsListeners) {
+        this.eventsListeners = { ...existingInstance.eventsListeners };
+        this.eventsAnyListeners = [...existingInstance.eventsAnyListeners];
+      }
+
+      // Монтируем элемент | Mount element
+      if (!this.el || this.el !== el) {
+        this.mount(el);
+      }
+
+      // Настройка элемента | Setup element
+      el.classList.add("prismium");
+
+      if (this.options.theme) {
+        el.classList.add(`prismium_${this.options.theme}`);
+      }
+
+      // Инициализация DOM и менеджеров | Initialize DOM and managers
+      this.domManager.setup(this, el);
+
+      if (this.$current) {
+        this.iconManager = new IconManager();
+        this.iconManager.setup(this, this.$current);
+        this.bindEvents(el);
+      }
 
       if (typeof this.options.speed === "number") {
         this.setupSpeed(this.options.speed);
@@ -179,24 +268,21 @@ class Prismium {
         this.setupSpeed(this.options.speed.open, this.options.speed.close);
       }
 
-      if (this.$current) {
-        this.iconManager.setup(this, this.$current);
-        this.bindEvents(this.el);
-      }
-
+      // Инициализация модулей | Initialize modules
       this.__modules__.forEach(module => {
         if (typeof module.init === "function") {
           module.init(this);
         }
       });
 
-      this.initialized = true;
-      this.el.__prismiumInstance__ = this;
-      this.emit("init");
+      el.__prismiumInstance__ = this;
+      Prismium.__instances__.set(el, this);
 
+      this.initialized = true;
+      this.emit("init");
     } catch (error) {
       console.error("Initialization error:", error);
-      throw error;
+      throw new PrismiumError("Initialization error", error);
     }
 
     this.emit("afterInit");
@@ -230,7 +316,7 @@ class Prismium {
           this.clickHandler(el);
         }
       };
-      
+
       this.$current.addEventListener("click", handler);
       this.$current._hasClickHandler = true;
       this.$current._clickHandler = handler;
@@ -239,17 +325,16 @@ class Prismium {
 
   // Обработчик кликов | Click handler
   clickHandler(el) {
-    const instance = this.getInstance(el) || this;
+    const instance = this.getInstance(el);
+    if (!instance) return;
 
+    // Используем контекст конкретного экземпляра | Use context of the specific instance
     if (instance.options.autoClose && instance.$container) {
       const openedItems = instance.$container.querySelectorAll(`.${instance.options.activeClass}`);
       openedItems.forEach(item => {
-        if (!el.contains(item) && !item.contains(el)) {
-          const itemInstance = this.getInstance(item);
-          this.close(item);
-          if (itemInstance && itemInstance.iconManager) {
-            itemInstance.iconManager.updateIcon("close");
-          }
+        const itemInstance = item.__prismiumInstance__;
+        if (itemInstance && !el.contains(item) && !item.contains(el)) {
+          itemInstance.close(item);
         }
       });
     }
@@ -259,12 +344,9 @@ class Prismium {
       if (containerEl) {
         const nestedItems = containerEl.querySelectorAll(`.${instance.options.activeClass}`);
         nestedItems.forEach(nested => {
-          if (nested !== el && !nested.contains(el)) {
-            const nestedInstance = this.getInstance(nested);
-            this.close(nested);
-            if (nestedInstance && nestedInstance.iconManager) {
-              nestedInstance.iconManager.updateIcon("close");
-            }
+          const nestedInstance = nested.__prismiumInstance__;
+          if (nestedInstance && nested !== el && !nested.contains(el)) {
+            nestedInstance.close(nested);
           }
         });
       }
@@ -274,16 +356,22 @@ class Prismium {
       return;
     }
 
-    this.toggle(el);
+    if (instance.opened) {
+      instance.close(el);
+    } else {
+      instance.open(el);
+    }
   }
 
   // Переключение состояния | Toggle state
   toggle(el) {
-    const instance = this.getInstance(el) || this;
+    const instance = this.getInstance(el);
+    if (!instance) return;
+
     if (instance.opened) {
-      this.close(el);
+      instance.close(el);
     } else {
-      this.open(el);
+      instance.open(el);
     }
   }
 }
@@ -294,5 +382,8 @@ Object.keys(prototypes).forEach((prototypeGroup) => {
     Prismium.prototype[protoMethod] = prototypes[prototypeGroup][protoMethod];
   });
 });
+
+// Сделаем класс доступным глобально для методов | Make class globally available for methods
+globalThis.Prismium = Prismium;
 
 export default Prismium;

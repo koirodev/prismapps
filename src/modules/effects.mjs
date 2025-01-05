@@ -15,5 +15,5 @@ export default {
     deepMerge({}, this.defaultOptions, instance.options);
     
     instance.effectsManager = new EffectsManager();
-  }
+  },
 };

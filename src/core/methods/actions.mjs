@@ -8,9 +8,9 @@ export default {
     // Если элемент не найден, выход из функции | Exit the function if the element is not found
     if (!el) return;
 
-    // Получение экземпляра или использование текущего контекста | Get an instance or use the current context
-    const instance = this.getInstance(el) || this;
-    if (instance.opened) return;
+    // Получаем именно тот экземпляр, который привязан к элементу | Get the exact instance that is bound to the element
+    const instance = this.getInstance(el);
+    if (!instance || instance.opened) return;
 
     instance.emit("beforeOpen");
 
@@ -88,9 +88,9 @@ export default {
     // Если элемент не найден, выход из функции | Exit the function if the element is not found
     if (!el) return;
 
-    // Получение экземпляра или использование текущего контекста | Get an instance or use the current context
-    const instance = this.getInstance(el) || this;
-    if (!instance.opened) return;
+    // Получаем именно тот экземпляр, который привязан к элементу | Get the exact instance that is bound to the element
+    const instance = this.getInstance(el);
+    if (!instance || !instance.opened) return;
 
     instance.emit("beforeClose");
 

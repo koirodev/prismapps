@@ -5,16 +5,27 @@ export default {
     this.emit("beforeDestroy");
 
     try {
+      const PrismiumClass = Object.getPrototypeOf(this).constructor;
+      const currentEl = this.el;
+
+      // Сохраняем только важные состояния | Save only important states
+      const savedState = {
+        options: { ...this.options },
+        __modules__: new Map(this.__modules__),
+      };
+
       // Проверка подключения элемента | Check if element is connected
       if (this.el && !this.el.isConnected) {
         return this;
       }
 
       // Очистка основного элемента | Clean up main element
-      if (this.el) {
-        this.el.classList.remove("prismium", this.options.activeClass);
-        this.el.style.removeProperty("--prismium-speed");
-        delete this.el.__prismiumInstance__;
+      if (currentEl) {
+        currentEl.classList.remove(
+          "prismium",
+          this.options.activeClass
+        );
+        currentEl.style.removeProperty("--prismium-speed");
       }
 
       // Очистка текущего элемента | Clean up current element
@@ -74,14 +85,12 @@ export default {
 
       this.iconManager = null;
 
-      // Очистка слушателей событий | Clean up event listeners
-      this.eventsListeners = {};
-      this.eventsAnyListeners = [];
-
-      // Сброс состояний | Reset states
-      this.destroyed = true;
-      this.initialized = false;
-      this.opened = false;
+      // Очистка модулей (без полного удаления) | Clean up modules (without full deletion)
+      this.__modules__.forEach(module => {
+        if (typeof module.destroy === "function") {
+          module.destroy(this);
+        }
+      });
 
       // Очистка ссылок на DOM элементы (кроме this.el) | Clean up references to DOM elements (except this.el)
       this.$current = null;
@@ -94,14 +103,27 @@ export default {
       this.icon = null;
       this.speed = null;
 
-      this.emit("destroy");
-      this.emit("afterDestroy");
+      this.initialized = false;
+      this.destroyed = true;
+      this.opened = false;
 
+      this.options = savedState.options;
+      this.__modules__ = savedState.__modules__;
+
+      // Удаляем инстанс из хранилища | Remove instance from storage
+      if (currentEl && PrismiumClass) {
+        PrismiumClass.__instances__.delete(currentEl);
+        this.el = currentEl;
+      }
+
+      this.emit("destroy");
     } catch (error) {
       console.error("Destroy error:", error);
       throw error;
     }
 
+    this.emit("afterDestroy");
+
     return this;
-  },
+  }
 }

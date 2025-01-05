@@ -77,7 +77,6 @@ export default {
   // Генерация событий | Emit events
   emit(...args) {
     const self = this;
-    if (!self.eventsListeners || self.destroyed) return self;
     if (!self.eventsListeners) return self;
     let events;
     let data;

@@ -1,29 +1,28 @@
 @import "../core/scss/_mixins.scss";
 
-.prismium_dark {
-  --prismium-background-color-active: #0F0F0F;
-  --prismium-background-color-active-nested: #FFF05;
-  --prismium-background-color-disabled: #3A3A3A;
-  --prismium-background-color-hover: #0E0E0E;
-  --prismium-background-color-primary: #2B2B2B;
-  --prismium-border-color-primary: #3A3A3A;
+.prismium_light-contrast {
+  --prismium-background-color-active: #FFF;
+  --prismium-background-color-disabled: #C5C5C5;
+  --prismium-background-color-hover: #E2E2E2;
+  --prismium-background-color-primary: #F5F5F5;
+  --prismium-border-color-primary: #000;
   --prismium-border-radius: 12px;
-  --prismium-border-width: 1px;
+  --prismium-border-width: 2px;
   --prismium-content-gap: 20px;
   --prismium-content-offset: 20px;
   --prismium-current-gap: 20px;
-  --prismium-font-primary: 500 20px/1.2 sans-serif;
-  --prismium-font-secondary: 500 16px/1.2 sans-serif;
+  --prismium-font-primary: 500 36px/1.2 sans-serif;
+  --prismium-font-secondary: 500 24px/1.2 sans-serif;
   --prismium-gap: 10px;
-  --prismium-icon-color-hover: #56E6DE;
+  --prismium-icon-color-hover: var(--prismium-link-color-primary);
   --prismium-icon-color-primary: var(--prismium-text-color-primary);
-  --prismium-icon-size: 24px;
-  --prismium-link-color-hover: #FCB0FC;
-  --prismium-link-color-primary: #56E6DE;
+  --prismium-icon-size: 48px;
+  --prismium-link-color-hover: #430049;
+  --prismium-link-color-primary: #000142;
   --prismium-link-decoration: underline;
   --prismium-padding: 12px;
-  --prismium-text-color-primary: #DFDFDF;
-  --prismium-text-color-secondary: #B3B3B3;
+  --prismium-text-color-primary: #131313;
+  --prismium-text-color-secondary: #1F1F1F;
 
   margin-top: var(--prismium-gap);
 
@@ -59,10 +58,6 @@
       &::before {
         width: 100%;
       }
-    }
-
-    & .js-prismium-active {
-      background-color: var(--prismium-background-color-active-nested);
     }
   }
 

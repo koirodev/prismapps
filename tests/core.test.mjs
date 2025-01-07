@@ -26,12 +26,12 @@ describe("Prismium Core", () => {
     prismium = new Prismium("[data-prismium]");
   });
 
-  describe("Методы экземпляра", () => {
-    it("должен инициализироваться с настройками по умолчанию", () => {
+  describe("Instance methods", () => {
+    it("should be initialized with default settings", () => {
       assert.ok(prismium);
     });
 
-    it("должен корректно уничтожаться", () => {
+    it("must be destroyed correctly", () => {
       prismium.destroy();
       assert.ok(prismium.destroyed);
       assert.ok(!prismium.initialized);
@@ -47,7 +47,7 @@ describe("Prismium Core", () => {
       assert.strictEqual(prismium.speed, null);
     });
 
-    it("должен корректно открываться и закрываться", () => {
+    it("should open and close correctly", () => {
       const el = document.querySelector("[data-prismium]");
       prismium.open(el);
       assert.ok(prismium.opened);
@@ -55,7 +55,7 @@ describe("Prismium Core", () => {
       assert.ok(!prismium.opened);
     });
 
-    it("должен корректно монтироваться", () => {
+    it("must be mounted correctly", () => {
       const el = document.createElement("div");
       el.innerHTML = `
         <div data-prismium-current></div>
@@ -69,19 +69,19 @@ describe("Prismium Core", () => {
       assert.ok(prismium.$hidden);
     });
 
-    it("должен выбрасывать ошибку при монтировании без элемента", () => {
+    it("should throw an error when mounted without an element", () => {
       assert.throws(() => {
         prismium.mount(null);
       }, /Element is required/);
     });
 
-    it("должен выбрасывать ошибку при монтировании с некорректным элементом", () => {
+    it("should throw an error when mounted with an invalid element", () => {
       assert.throws(() => {
         prismium.mount({});
       }, /Invalid element type/);
     });
 
-    it("должен инициализироваться с { init: false }", (done) => {
+    it("must be initialized with { init: false }", (done) => {
       try {
         const el = document.createElement("div");
         el.innerHTML = `
@@ -106,7 +106,7 @@ describe("Prismium Core", () => {
       }
     });
 
-    it("должен корректно устанавливать скорость", () => {
+    it("should set the speed correctly", () => {
       prismium.setupSpeed();
       assert.deepStrictEqual(prismium.speed, {
         open: 350,
@@ -114,13 +114,13 @@ describe("Prismium Core", () => {
       });
     });
 
-    it("должен корректно возвращать экземпляр", () => {
+    it("should return an instance correctly", () => {
       const el = document.createElement("div");
       el.__prismiumInstance__ = prismium;
       assert.strictEqual(prismium.getInstance(el), prismium);
     });
 
-    it("должен корректно привязывать события", () => {
+    it("should bind events correctly", () => {
       const el = document.createElement("div");
       el.innerHTML = `
         <div data-prismium-current></div>
@@ -130,7 +130,7 @@ describe("Prismium Core", () => {
       assert.ok(prismium.$current._clickHandler);
     });
 
-    it("должен корректно обрабатывать открытие", (done) => {
+    it("should handle opening correctly", (done) => {
       try {
         const el = document.createElement("div");
         el.innerHTML = `
@@ -157,7 +157,7 @@ describe("Prismium Core", () => {
       }
     });
 
-    it("должен корректно обрабатывать закрытие", (done) => {
+    it("should handle closing correctly", (done) => {
       try {
         const el = document.createElement("div");
         el.innerHTML = `
@@ -190,7 +190,7 @@ describe("Prismium Core", () => {
       }
     });
 
-    it("должен корректно переключать состояние", (done) => {
+    it("should switch state correctly", (done) => {
       try {
         const el = document.createElement("div");
         el.innerHTML = `

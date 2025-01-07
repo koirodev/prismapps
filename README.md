@@ -1,4 +1,4 @@
-<div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+<div style="width: 100%; display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
   <a href="https://github.com/koirodev/prismium/actions/workflows/test.yml">
     <img src="https://github.com/koirodev/prismium/workflows/Tests/badge.svg" alt="Tests" />
   </a>

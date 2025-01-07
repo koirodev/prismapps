@@ -3,24 +3,10 @@
   "version": "4.0.0-beta.1",
   "description": "A modern JavaScript library of UI components. Accordion, filter, dropdown, tooltip in one package.",
   "type": "module",
-  "exports": {
-    ".": "./prismium-core.mjs",
-    "./ui": "./prismium-ui.mjs",
-
-    "./css": "./prismium.css",
-
-    "./theme/light": "./themes/light.css",
-    "./theme/dark": "./themes/dark.css",
-    "./theme/light-contrast": "./themes/light-contrast.css",
-    "./theme/dark-contrast": "./themes/dark-contrast.css",
-    "./theme/forest": "./themes/forest.css",
-    "./theme/ocean": "./themes/ocean.css",
-    "./theme/sunset": "./themes/sunset.css"
-  },
   "scripts": {
     "build": "npx gulp",
     "dev": "npx gulp dev",
-    "test": "clear && npx mocha tests/**/*.test.mjs"
+    "test": "npx mocha tests/**/*.test.mjs"
   },
   "repository": {
     "type": "git",

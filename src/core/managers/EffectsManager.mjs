@@ -60,8 +60,8 @@ export class EffectsManager {
     if (!children.length) return;
     
     // Обрабатываем options | Process options
-    if (typeof options.y === "Number") options.y += "px";
-    if (typeof options.x === "Number") options.x += "px";
+    if (typeof options.y === "Number") options.y = `${options.y}px`;
+    if (typeof options.x === "Number") options.x = `${options.y}px`;
 
     // Форсируем reflow | Force reflow
     instance.$content.offsetHeight;
@@ -170,7 +170,7 @@ export class EffectsManager {
     if (!children.length) return;
     
     // Обрабатываем options | Process options
-    if (typeof options.distance === "Number") options.y += "px";
+    if (typeof options.distance === "Number") options.distance = `${options.distance}px`;
 
     // Определяем трансформацию в зависимости от направления | Define transform based on direction
     const getTransform = (direction, distance) => {
@@ -226,7 +226,7 @@ export class EffectsManager {
     if (!children.length) return;
     
     // Обрабатываем options | Process options
-    if (typeof options.distance === "Number") options.y += "px";
+    if (typeof options.distance === "Number") options.distance = `${options.distance}px`;
 
     // Сбрасываем стили перед анимацией | Reset styles before animation
     children.forEach((child, i) => {
@@ -292,7 +292,7 @@ export class EffectsManager {
     if (!children.length) return;
     
     // Обрабатываем options | Process options
-    if (typeof options.amplitude === "Number") options.y += "px";
+    if (typeof options.amplitude === "Number") options.amplitude = `${options.amplitude}px`;
 
     // Сбрасываем стили перед анимацией | Reset styles before animation
     children.forEach((child, i) => {
@@ -344,7 +344,7 @@ export class EffectsManager {
     if (!children.length) return;
     
     // Обрабатываем options | Process options
-    if (typeof options.perspective === "Number") options.y += "px";
+    if (typeof options.perspective === "Number") options.perspective = `${options.perspective}px`;
 
     instance.$content.style.perspective = options.perspective;
 
@@ -434,7 +434,7 @@ export class EffectsManager {
     if (!children.length) return;
     
     // Обрабатываем options | Process options
-    if (typeof options.distance === "Number") options.y += "px";
+    if (typeof options.distance === "Number") options.distance = `${options.distance}px`;
 
     children.forEach((child, i) => {
       child.style.transition = "none";

@@ -31,12 +31,38 @@ export class EffectsManager {
 
   // Получение отфильтрованных дочерних элементов | Get filtered children
   #getFilteredChildren(instance) {
-    const selectors = Array.isArray(instance.options.effectIgnore)
+    let childrenSelectors, ignoreSelectors;
+
+    childrenSelectors = Array.isArray(instance.options.effectSelectors)
+      ? instance.options.effectSelectors
+      : [instance.options.effectSelectors];
+
+    ignoreSelectors = Array.isArray(instance.options.effectIgnore)
       ? instance.options.effectIgnore
       : [instance.options.effectIgnore];
 
-    return Array.from(instance.$content.children).filter(child =>
-      !selectors.some(selector =>
+    let children;
+    if (childrenSelectors[0]) {
+      children = childrenSelectors.reduce((acc, selector) => {
+        if (selector) {
+          const elements = Array.from(instance.$content.querySelectorAll(selector));
+          elements.forEach(el => {
+            const isNested = ignoreSelectors.some(ignoreSelector =>
+              ignoreSelector && el.closest(ignoreSelector)
+            );
+            if (!isNested) {
+              acc.push(el);
+            }
+          });
+        }
+        return acc;
+      }, []);
+    } else {
+      children = Array.from(instance.$content.children);
+    }
+
+    return children.filter(child =>
+      !ignoreSelectors.some(selector =>
         selector && child.matches(selector)
       )
     );
@@ -58,7 +84,7 @@ export class EffectsManager {
     const children = this.#getFilteredChildren(instance);
 
     if (!children.length) return;
-    
+
     // Обрабатываем options | Process options
     if (typeof options.y === "number") options.y = `${options.y}px`;
     if (typeof options.x === "number") options.x = `${options.x}px`;
@@ -168,7 +194,7 @@ export class EffectsManager {
     const options = { ...defaults, ...instance.options.effectSlide };
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
-    
+
     // Обрабатываем options | Process options
     if (typeof options.distance === "number") options.distance = `${options.distance}px`;
 
@@ -224,7 +250,7 @@ export class EffectsManager {
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
-    
+
     // Обрабатываем options | Process options
     if (typeof options.distance === "number") options.distance = `${options.distance}px`;
 
@@ -290,7 +316,7 @@ export class EffectsManager {
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
-    
+
     // Обрабатываем options | Process options
     if (typeof options.amplitude === "number") options.amplitude = `${options.amplitude}px`;
 
@@ -342,7 +368,7 @@ export class EffectsManager {
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
-    
+
     // Обрабатываем options | Process options
     if (typeof options.perspective === "number") options.perspective = `${options.perspective}px`;
 
@@ -432,7 +458,7 @@ export class EffectsManager {
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
-    
+
     // Обрабатываем options | Process options
     if (typeof options.distance === "number") options.distance = `${options.distance}px`;
 

@@ -49,8 +49,8 @@ export class EffectsManager {
       easing: "cubic-bezier(.25,.1,.25,1)",
       delay: 30,
       scale: 0.95,
-      y: "30px",
-      x: "0px",
+      y: 30,
+      x: 0,
       opacity: 0
     };
 
@@ -58,6 +58,10 @@ export class EffectsManager {
     const children = this.#getFilteredChildren(instance);
 
     if (!children.length) return;
+    
+    // Обрабатываем options | Process options
+    if (typeof options.y === "Number") options.y += "px";
+    if (typeof options.x === "Number") options.x += "px";
 
     // Форсируем reflow | Force reflow
     instance.$content.offsetHeight;
@@ -157,13 +161,16 @@ export class EffectsManager {
       speed: 400,
       easing: "cubic-bezier(.25,.1,.25,1)",
       direction: "up",
-      distance: "30px",
+      distance: 30,
       opacity: 0
     };
 
     const options = { ...defaults, ...instance.options.effectSlide };
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
+    
+    // Обрабатываем options | Process options
+    if (typeof options.distance === "Number") options.y += "px";
 
     // Определяем трансформацию в зависимости от направления | Define transform based on direction
     const getTransform = (direction, distance) => {
@@ -211,12 +218,15 @@ export class EffectsManager {
       easing: "cubic-bezier(.25,.1,.25,1)",
       delay: 50,
       directions: ["up", "right", "down", "left"],
-      distance: "30px",
+      distance: 30,
       opacity: 0
     };
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
+    
+    // Обрабатываем options | Process options
+    if (typeof options.distance === "Number") options.y += "px";
 
     // Сбрасываем стили перед анимацией | Reset styles before animation
     children.forEach((child, i) => {
@@ -273,13 +283,16 @@ export class EffectsManager {
       speed: 400,
       easing: "cubic-bezier(.25,.1,.25,1)",
       delay: 30,
-      amplitude: "20px",
+      amplitude: 20,
       frequency: 2,
       opacity: 0
     };
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
+    
+    // Обрабатываем options | Process options
+    if (typeof options.amplitude === "Number") options.y += "px";
 
     // Сбрасываем стили перед анимацией | Reset styles before animation
     children.forEach((child, i) => {
@@ -322,13 +335,16 @@ export class EffectsManager {
       speed: 600,
       easing: "cubic-bezier(.25,.1,.25,1)",
       delay: 50,
-      perspective: "1000px",
+      perspective: 1000,
       rotation: 90,
       opacity: 0
     };
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
+    
+    // Обрабатываем options | Process options
+    if (typeof options.perspective === "Number") options.y += "px";
 
     instance.$content.style.perspective = options.perspective;
 
@@ -410,12 +426,15 @@ export class EffectsManager {
       easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
       delay: 100,
       rotation: 15,
-      distance: "50px",
+      distance: 50,
       opacity: 0
     };
 
     const children = this.#getFilteredChildren(instance);
     if (!children.length) return;
+    
+    // Обрабатываем options | Process options
+    if (typeof options.distance === "Number") options.y += "px";
 
     children.forEach((child, i) => {
       child.style.transition = "none";

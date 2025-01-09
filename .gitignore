@@ -6,6 +6,12 @@
 .vscode
 __MACOSX
 
+# Vue
+.nuxt
+.output
+/assets
+/middleware
+
 node_modules
 dist
 demos

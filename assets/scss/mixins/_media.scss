@@ -1,0 +1,36 @@
+// /*
+// ╭─────────────────ЗаметОчка──────────────────╮
+// │                                            │
+// │        Заменить запросы в common.js        │
+// │                                            │
+// ╰────────────────────────────────────────────╯
+// */
+@mixin mediaBigDesktop {
+  @media (width > 1920px) {
+    @content;
+  }
+}
+
+@mixin mediaLaptop {
+  @media (width <= 1180px) {
+    @content;
+  }
+}
+
+@mixin mediaTablet {
+  @media (width <= 1000px) {
+    @content;
+  }
+}
+
+@mixin mediaMobile {
+  @media (width <= 600px) {
+    @content;
+  }
+}
+
+@mixin media($width) {
+  @media (width <= $width) {
+    @content;
+  }
+}

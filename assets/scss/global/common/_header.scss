@@ -1,0 +1,17 @@
+.header {
+  padding: rem(15) 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background-color: var(--bg-dark-secondary);
+
+  & .container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: rem(20);
+  }
+}

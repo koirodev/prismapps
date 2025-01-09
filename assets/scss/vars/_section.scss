@@ -1,0 +1,24 @@
+:root {
+  --section-padding: #{rem(120)};
+  --section-gap: #{rem(60)};
+
+  @include mediaBigDesktop {
+    --section-padding: #{big(120)};
+    --section-gap: #{big(60)};
+  }
+
+  @include mediaLaptop {
+    --section-padding: #{rem(100)};
+    --section-gap: #{rem(50)};
+  }
+
+  @include mediaTablet {
+    --section-padding: #{rem(70)};
+    --section-gap: #{rem(45)};
+  }
+
+  @include mediaMobile {
+    --section-padding: #{rem(45)};
+    --section-gap: #{rem(25)};
+  }
+}

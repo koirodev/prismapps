@@ -1,0 +1,10 @@
+:root {
+  --font-primary: "Montserrat", sans-serif;
+  --font-secondary: "RockStar", sans-serif;
+
+  --current-font: var(--font-body); // Техническое свойство, просто так не удалять!!!
+
+  --font-body:    400 #{rem(18)}/normal var(--font-primary);
+
+  --font-btn:     700 #{rem(14)}/normal var(--font-secondary);
+}

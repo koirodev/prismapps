@@ -1,0 +1,78 @@
+@use "mini" as *;
+
+$track_color: transparent;
+$thumb_color: var(--stroke-dark);
+$thumb_color_hover: var(--current-accent-color);
+$border_color: var(--bg-white);
+$line_size: rem(13);
+$line_hight: $line_size;
+$radius: var(--radius-small-elements);
+$offset: rem(4);
+
+@mixin scrollbar {
+  --scrollbar-border-color: #{$border_color};
+  --scrollbar-thumb-color: #{$thumb_color};
+  --scrollbar-thumb-color-hover: #{$thumb_color_hover};
+
+  &::-webkit-scrollbar {
+    width: $line_size;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color, #{$track_color});
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color, #{$thumb_color});
+    border: $offset solid var(--scrollbar-border-color, #{$border_color});
+    border-radius: $radius;
+
+    cursor: pointer;
+
+    @include hover {
+      background-color: var(--scrollbar-thumb-color-hover, #{$thumb_color_hover});
+    }
+  }
+}
+
+@mixin scrollbarHorizontal {
+  --scrollbar-border-color: #{$border_color};
+  --scrollbar-thumb-color: #{$thumb_color};
+  --scrollbar-thumb-color-hover: #{$thumb_color_hover};
+
+  &::-webkit-scrollbar {
+    height: $line_hight;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color, #{$track_color});
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color, #{$thumb_color});
+    border: $offset solid var(--scrollbar-border-color, #{$border_color});
+    border-radius: $radius;
+
+    cursor: pointer;
+
+    @include hover {
+      background-color: var(--scrollbar-thumb-color-hover, #{$thumb_color_hover});
+    }
+  }
+}
+
+@mixin scrollbarDelete {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+}

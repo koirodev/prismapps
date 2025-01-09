@@ -1,0 +1,29 @@
+.page-enter-active,
+.page-leave-active {
+  transition: all var(--animation-default);
+  top: 0;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(20px);
+}
+
+[data-page-transition="slide-left"] {
+  .page-enter-from {
+    transform: translateX(100%);
+  }
+  .page-leave-to {
+    transform: translateX(-100%);
+  }
+}
+
+[data-page-transition="slide-right"] {
+  .page-enter-from {
+    transform: translateX(-100%);
+  }
+  .page-leave-to {
+    transform: translateX(100%);
+  }
+}

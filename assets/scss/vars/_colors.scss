@@ -1,0 +1,35 @@
+:root {
+  --current-background-color: var(--bg-dark); // Техническое свойство, просто так не удалять!!!
+  --current-text-color:       var(--text-light-primary); // Техническое свойство, просто так не удалять!!!
+  --current-accent-color:     var(--accent-primary-hover); // Техническое свойство, просто так не удалять!!!
+
+  --accent-primary-default:   #89ffff;
+  --accent-primary-hover:     #3effff;
+
+  --accent-secondary-default: #fbf1f4;
+  --accent-secondary-hover:   #ff3366;
+
+  --bg-white:                 #FFFFFF;
+  --bg-light:                 #fafafa;
+
+  --bg-dark:                  #02021A;
+  --bg-dark-secondary:        #0e0a2b;
+
+  --text-light-primary:       #FFFFFF;
+  --text-light-secondary:     #ffffff5e;
+
+  --text-dark-primary:        #02021A;
+  --text-dark-secondary:      #02021A5e;
+
+  --stroke-light:             rgba(139,140,142,.2);
+  --stroke-dark:              rgba(27,47,63,.1);
+
+  --system-states-error:      var(--accent-primary-default);
+  --system-states-validation: #FFC225;
+  --system-states-success:    #2AB6A5;
+
+  --disabled-light:           #FFFFFF4D;
+  --disabled-dark:            #0000004D;
+
+  --icon-color:               var(--text-dark-primary);
+}

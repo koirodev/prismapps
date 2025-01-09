@@ -1,0 +1,9 @@
+@use "sass:math";
+
+@function rem($pixels) {
+  @return #{math.div($pixels, 16)}rem;
+}
+
+@function big($pixels) {
+  @return #{math.div($pixels, 1920) * 100}vw;
+}

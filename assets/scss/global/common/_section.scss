@@ -1,0 +1,33 @@
+.section {
+  --section-background-color: transparent;
+
+  --section-border-radius: 0;
+  
+  --section-link-color: var(--accent-primary-default);
+  --section-link-color-hover: inherit;
+  
+  --section-text-color-primary: var(--text-dark-primary);
+  --section-text-color-secondary: var(--section-text-color-primary);
+
+  width: 100%;
+
+  overflow: hidden;
+
+  &:not(.section_grid) {
+    & .container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--section-gap);
+    }
+  }
+
+  &_padding {
+    &_top {
+      padding-top: var(--section-padding);
+    }
+
+    &_bottom {
+      padding-bottom: var(--section-padding);
+    }
+  }
+}

@@ -1,0 +1,9 @@
+:root {
+  --grid-column-gap: #{rem(20)};
+  --grid-row-gap: #{rem(20)};
+
+  @include mediaBigDesktop {
+    --grid-column-gap: #{big(20)};
+    --grid-row-gap: #{big(20)};
+  }
+}

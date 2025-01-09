@@ -1,0 +1,13 @@
+:root {
+  --cubic-bezier: cubic-bezier(.25, .1, .25, 1);
+
+  --animation-duration-short: 0.2s;
+  --animation-duration: 0.35s;
+  --animation-duration-medium: 0.45s;
+  --animation-duration-long: 0.7s;
+
+  --animation-short: var(--animation-duration-short) var(--cubic-bezier);
+  --animation-default: var(--animation-duration) var(--cubic-bezier);
+  --animation-medium: var(--animation-duration-medium) var(--cubic-bezier);
+  --animation-long: var(--animation-duration-long) var(--cubic-bezier);
+}

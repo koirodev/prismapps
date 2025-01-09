@@ -1,0 +1,9 @@
+:root {
+  --content-width: #{rem(1650)};
+  --container-offset: #{rem(125)};
+  --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
+
+  @include mediaLaptop {
+    --container-offset: #{rem(20)};
+  }
+}

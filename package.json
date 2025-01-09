@@ -1,6 +1,6 @@
 {
   "name": "prismium-src",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "A modern JavaScript library of UI components. Accordion, filter, dropdown, tooltip in one package.",
   "type": "module",
   "scripts": {

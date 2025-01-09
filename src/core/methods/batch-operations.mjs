@@ -59,8 +59,8 @@ export default {
   },
 
   // Закрыть все аккордеоны на странице | Close all accordions on the page
-  closeEverything() {
-    document.querySelectorAll(`.${this.options.activeClass}`).forEach((el) => {
+  closeEverything(selector = ".prismium") {
+    document.querySelectorAll(`${selector}.${this.options.activeClass}`).forEach((el) => {
       const instance = this.getInstance(el) || this;
 
       instance.close(el);

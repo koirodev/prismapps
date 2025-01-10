@@ -9,11 +9,11 @@ export default {
   spritePath: "sprite.svg",
 
   // NS
-  parentAttribute: "data-prismium-parent",
   iconAttribute: "data-prismium-icon",
   containerSelectors: ["[data-prismium-container]", ".section"],
   currentSelector: "[data-prismium-current]",
   contentSelector: "[data-prismium-content]",
+  hiddenSelector: "[data-prismium-hidden]",
 
   // Classes
   hiddenClass: "js-prismium-hidden",

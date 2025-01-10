@@ -40,7 +40,6 @@ describe("Prismium Core", () => {
       assert.strictEqual(prismium.$content, null);
       assert.strictEqual(prismium.$hidden, null);
       assert.strictEqual(prismium.$container, null);
-      assert.strictEqual(prismium.$parent, null);
       assert.strictEqual(prismium.$icons, null);
       assert.strictEqual(prismium.$binding, null);
       assert.strictEqual(prismium.icon, null);

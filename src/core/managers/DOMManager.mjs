@@ -32,6 +32,8 @@ export class DOMManager {
     const content = el.querySelector(this.instance.options.contentSelector);
     const current = el.querySelector(this.instance.options.currentSelector);
 
+    let hidden;
+
     if (!content || !current) {
       throw new Error("Required elements not found");
     }
@@ -39,19 +41,18 @@ export class DOMManager {
     this.instance.$content = content;
     this.instance.$current = current;
 
-    const hidden = document.createElement("div");
-    hidden.classList.add("prismium__hidden");
-
-    hidden.appendChild(content);
-    el.appendChild(hidden);
+    if (content.parentElement === content.closest(this.instance.options.hiddenSelector)) {
+      hidden = content.parentElement;
+    } else {
+      hidden = document.createElement("div");
+      hidden.appendChild(content);
+      el.appendChild(hidden);
+    }
 
     this.instance.$hidden = hidden;
+    
     this.instance.$binding = this.instance.options.getParentHeight ? el : content;
     this.instance.$container = el.closest(this.instance.options.containerSelectors.find(selector => el.closest(selector)));
-
-    if (el.closest(`[${this.instance.options.parentAttribute}]`)) {
-      this.instance.$parent = el.closest(`[${this.instance.options.parentAttribute}]`);
-    }
   }
 
   // Установка классов | Set classes

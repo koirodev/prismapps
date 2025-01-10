@@ -97,7 +97,6 @@ export default {
       this.$content = null;
       this.$hidden = null;
       this.$container = null;
-      this.$parent = null;
       this.$icons = null;
       this.$binding = null;
       this.icon = null;

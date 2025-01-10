@@ -83,18 +83,10 @@ export class DOMManager {
   handleInitialState(el) {
     if (el.classList.contains(this.instance.options.activeClass)) {
       el.classList.remove(this.instance.options.activeClass);
-      this.instance.opened = true;
       this.instance.$hidden.classList.add(this.instance.options.openedClass);
-
-      const height = this.instance.$binding.clientHeight;
-      if (height) {
-        this.instance.$hidden.style.maxHeight = `${height}px`;
-      }
-
-      setTimeout(() => {
-        this.instance.$hidden.style.removeProperty("max-height");
-        el.classList.add(this.instance.options.activeClass);
-      }, 0);
+      this.instance.on("afterInit", () => {
+        this.instance.open(el);
+      });
     } else {
       this.instance.opened = false;
     }

@@ -52,7 +52,11 @@ export class DOMManager {
     this.instance.$hidden = hidden;
     
     this.instance.$binding = this.instance.options.getParentHeight ? el : content;
-    this.instance.$container = el.closest(this.instance.options.containerSelectors.find(selector => el.closest(selector)));
+
+    let containerSelectors = Array.isArray(this.instance.options.containerSelectors)
+    ? this.instance.options.containerSelectors
+    : [this.instance.options.containerSelectors];
+    this.instance.$container = el.closest(containerSelectors.find(selector => el.closest(selector)));
   }
 
   // Установка классов | Set classes

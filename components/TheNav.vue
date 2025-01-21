@@ -1,24 +1,83 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
+import gsap from 'gsap';
+import { animation, gsapEase } from '@/config';
 
-const starsCount = ref(0);
-const starsText = ref("stars");
+const starsCount = ref(3);
+const starsText = ref('stars');
+const props = defineProps({
+  burgerMenu: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
+});
+
 const stars = computed(() => `${starsCount.value} ${starsText.value}`);
+
+const nav = ref(null);
+
+const resetNavForLargeScreen = () => {
+  if (window.innerWidth > 700) {
+    gsap.set(nav.value, {
+      visibility: 'visible',
+      pointerEvents: 'auto',
+      opacity: 1,
+      scale: 1
+    });
+  } else {
+    gsap.set(nav.value, {
+      visibility: props.burgerMenu ? 'visible' : 'hidden',
+      pointerEvents: props.burgerMenu ? 'auto' : 'none',
+      opacity: props.burgerMenu ? 1 : 0,
+      scale: props.burgerMenu ? 1 : 0
+    });
+  }
+};
+
+watch(() => props.burgerMenu, (newValue) => {
+  if (window.innerWidth <= 700) {
+    gsap.set(nav.value, {
+      visibility: newValue ? 'visible' : 'hidden',
+      pointerEvents: newValue ? 'auto' : 'none'
+    });
+
+    gsap.to(nav.value, {
+      opacity: newValue ? 1 : 0,
+      duration: animation.DEFAULT
+    });
+
+    gsap.to(nav.value, {
+      scale: newValue ? 1 : 0,
+      duration: animation.LONG,
+      ease: gsapEase.BOUNCE
+    });
+  }
+});
+
+onMounted(() => {
+  resetNavForLargeScreen();
+  window.addEventListener('resize', resetNavForLargeScreen);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', resetNavForLargeScreen);
+});
 
 onMounted(async () => {
   try {
-    const { data } = await useFetch("https://api.github.com/repos/koirodev/prismium");
+    const { data } = await useFetch('https://api.github.com/repos/koirodev/prismium');
     if (data.value) {
       starsCount.value = data.value.stargazers_count;
     }
   } catch (error) {
-    console.error("Failed to fetch GitHub stars:", error);
+    console.error('Failed to fetch GitHub stars:', error);
   }
 });
 </script>
 
 <template>
-  <nav class="nav">
+  <nav :class="{ 'nav': true, 'nav_show': burgerMenu }" ref="nav">
     <ul class="nav__list">
       <li class="nav__item">
         <span class="nav__link text">Docs</span>
@@ -42,6 +101,10 @@ onMounted(async () => {
           </li>
         </ul>
       </li>
+      <hr>
+      <li class="nav__item">
+        <span class="nav__link text">Demos</span>
+      </li>
       <li class="nav__item">
         <a class="nav__link nav__link_github" href="https://github.com/koirodev/prismium/" target="_blank">
           <SvgGithub class="nav__icon" :fontControlled="false" filled />
@@ -51,3 +114,5 @@ onMounted(async () => {
     </ul>
   </nav>
 </template>
+
+<style lang="scss" scoped></style>

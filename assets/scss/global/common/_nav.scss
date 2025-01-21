@@ -59,6 +59,10 @@
           white-space: nowrap;
         }
       }
+
+      & > hr {
+        display: block;
+      }
     }
 
     & > hr {
@@ -67,7 +71,7 @@
       padding: 0;
       width: 100%;
       height: 1px;
-      display: block;
+      display: none;
 
       background-color: var(--stroke-light);
       border: none;
@@ -136,6 +140,10 @@
         fill: var(--nav-text-color-hover);
       }
     }
+
+    & .text {
+      width: fit-content;
+    }
   }
 
   &__icon {
@@ -147,3 +155,5 @@
     transition: fill var(--animation-default);
   }
 }
+
+@import "nav_mobile";

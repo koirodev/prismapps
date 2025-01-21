@@ -1,6 +1,7 @@
 .logo {
   --logo-font-size: #{rem(24)};
-  --logo-offset: #{rem(5)};
+  --logo-gap: #{rem(10)};
+  --logo-offset: #{rem(6)};
   --logo-size: #{rem(50)};
   --version-font-size: #{rem(10)};
 
@@ -10,11 +11,18 @@
   display: flex;
   align-items: end;
   justify-content: flex-start;
-  gap: rem(10);
+  gap: var(--logo-gap);
 
   text-decoration: none;
 
   user-select: none;
+
+  @include media(700px) {
+    --logo-font-size: #{rem(18)};
+    --logo-gap: #{rem(7)};
+    --logo-size: #{rem(34)};
+    --version-font-size: #{rem(9)};
+  }
 
   &__image {
     position: relative;
@@ -23,6 +31,7 @@
     width: var(--logo-size);
     height: var(--logo-size);
     display: flex;
+    flex-shrink: 0;
 
     cursor: pointer;
     user-select: none;
@@ -77,8 +86,8 @@
     color: var(--text-light-primary);
     font-size: var(--version-font-size);
     text-decoration: none;
+    // border: 1px solid var(--accent-primary-hover);
 
-    border: 1px solid var(--accent-primary-hover);
     border-radius: var(--radius-small-elements);
     overflow: hidden;
 

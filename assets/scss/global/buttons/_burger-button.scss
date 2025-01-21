@@ -1,0 +1,76 @@
+.burger-button {
+  position: relative;
+  margin-left: auto;
+
+  width: rem(25);
+  height: rem(25);
+  display: none;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+  border-radius: 0;
+
+  cursor: pointer;
+  user-select: none;
+
+  &::before,
+  &::after,
+  &__line {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+
+    width: 80%;
+    height: 1px;
+
+    background-color: var(--bg-white);
+
+    transition: top var(--animation-default) var(--animation-duration),
+      bottom var(--animation-default) var(--animation-duration),
+      transform var(--animation-default),
+      width var(--animation-default) var(--animation-duration);
+  }
+
+  &::before {
+    bottom: rem(12);
+  }
+
+  &::after {
+    top: rem(12);
+  }
+
+  &_active {
+
+    &::before,
+    &::after {
+      transition: top var(--animation-default),
+        bottom var(--animation-default),
+        transform var(--animation-default) var(--animation-duration),
+        width var(--animation-default);
+    }
+
+    &::before {
+      bottom: 0;
+
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      top: 0;
+
+      transform: rotate(-45deg);
+    }
+
+    & .burger-button__line {
+      width: 0;
+    }
+  }
+}

@@ -1,12 +1,12 @@
 @use "mini" as *;
 
 $track_color: transparent;
-$thumb_color: var(--stroke-dark);
+$thumb_color: var(--bg-dark-secondary);
 $thumb_color_hover: var(--current-accent-color);
-$border_color: var(--bg-white);
+$border_color:var(--bg-dark);
 $line_size: rem(13);
 $line_hight: $line_size;
-$radius: var(--radius-small-elements);
+$radius: var(--radius-infinity);
 $offset: rem(4);
 
 @mixin scrollbar {

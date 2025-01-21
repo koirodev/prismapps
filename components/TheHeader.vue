@@ -1,18 +1,26 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
 
-const versionPrefix = ref("v");
-const versionValue = ref("0.0.0");
+const versionPrefix = ref('v');
+const versionValue = ref('4.0.0');
 const version = computed(() => versionPrefix.value + versionValue.value);
 
 onMounted(async () => {
   try {
-    const { data } = await useFetch("https://registry.npmjs.org/prismium/latest");
+    const { data } = await useFetch('https://registry.npmjs.org/prismium/latest');
     if (data.value) {
       versionValue.value = data.value.version;
     }
   } catch (error) {
-    console.error("Failed to fetch package version:", error);
+    console.error('Failed to fetch package version:', error);
+  }
+});
+
+const burgerMenu = ref(true);
+
+document.addEventListener('click', (event) => {
+  if (burgerMenu.value && !event.target.closest('.burger-button') && !event.target.closest('.nav')) {
+    burgerMenu.value = false;
   }
 });
 </script>
@@ -30,8 +38,14 @@ onMounted(async () => {
         </a>
       </div>
 
-      <TheNav />
-      <button class="burger-menu"></button>
+      <TheNav :burgerMenu="burgerMenu" />
+
+      <button :class="{
+        'burger-button': true,
+        'burger-button_active': burgerMenu
+      }" type="button" title="Open menu" @click.prevent="burgerMenu = !burgerMenu;">
+        <span class="burger-button__line"></span>
+      </button>
     </div>
   </header>
 </template>
@@ -44,5 +58,6 @@ onMounted(async () => {
 .logo {
   position: relative;
   bottom: 7px;
+  z-index: 0;
 }
 </style>

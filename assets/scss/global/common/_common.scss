@@ -72,15 +72,11 @@
   position: relative;
   z-index: 1;
 
-  padding-top: calc(var(--global-header-height, 0px) + #{rem(44)}); // фикс фиксированной шапки
+  padding-top: var(--global-header-height, 0px); // фикс фиксированной шапки
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
-  @include mediaMobile {
-    padding-top: calc(var(--global-header-height, 0px) + #{rem(40)}); // фикс фиксированной шапки
-  }
 
   &__content {
     display: flex;

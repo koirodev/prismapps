@@ -1,0 +1,98 @@
+@include media(700px) {
+  .header {
+    & .burger-button {
+      display: flex;
+    }
+
+    & .nav {
+      --nav-font: 400 #{rem(14)}/1.5 var(--font-secondary);
+      --nav-gap: #{rem(10)};
+      --nav-icon-size: #{rem(24)};
+      --nav-offset-right: #{rem(10)};
+      --nav-offset-top: #{rem(15)};
+      --nav-padding-top: #{rem(50)};
+      --nav-padding: #{rem(10)};
+
+      position: absolute;
+      overflow: hidden;
+      top: var(--nav-offset-top);
+      right: var(--nav-offset-right);
+
+      padding: 0;
+      width: rem(250);
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      background-color: var(--bg-dark-secondary);
+      border: solid 1px var(--stroke-light);
+      border-radius: var(--radius-btn);
+      visibility: hidden;
+      opacity: 0;
+
+      transform-origin: calc(100% - 20px) 20px;
+      transition: visibility var(--animation-default);
+
+      pointer-events: none;
+      &::before {
+        content: "";
+        position: fixed;
+        top: 0;left: 0;
+        width: 100%;
+        height: var(--nav-padding-top);
+        background: linear-gradient(180deg, var(--bg-dark-secondary) 0%, transparent 100%);
+        z-index: 1;
+      }
+
+      &__list {
+        position: relative;
+        z-index: 0;
+        padding: var(--nav-padding-top) var(--nav-padding) var(--nav-padding);
+        width: 100%;
+        max-height: calc(100vh - var(--global-dvh-diff, 0px) - var(--nav-offset-top) * 2 - var(--nav-padding-top) - var(--nav-padding));
+        flex-direction: column;
+        align-items: flex-start;
+
+        overflow: auto;
+
+        transition: unset;
+
+        @include scrollbarDelete();
+
+        & .nav__list {
+          position: static;
+          margin: 0;
+
+          padding: 0;
+          padding-left: rem(15);
+
+          box-shadow: none;
+          background-color: transparent;
+          visibility: inherit;
+          opacity: 1;
+
+          & > hr {
+            display: none;
+          }
+        }
+
+        & > hr {
+          display: block;
+        }
+      }
+
+      &__item {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: calc(var(--nav-gap) / 2);
+      }
+
+      &__link {
+        padding: rem(7);
+        width: 100%;
+      }
+    }
+  }
+}

@@ -279,6 +279,7 @@ class Prismium {
       Prismium.__instances__.set(el, this);
 
       this.initialized = true;
+      this.el.classList.add("prismium-initialized");
       this.emit("init");
     } catch (error) {
       console.error("Initialization error:", error);

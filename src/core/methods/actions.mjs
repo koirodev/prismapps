@@ -49,13 +49,6 @@ export default {
       // Очищаем предыдущую анимацию если она есть | Clear the previous animation if it exists
       cancelFollow();
 
-      // Обработчик прокрутки для отмены анимации | Scroll handler to cancel animation
-      const scrollHandler = () => {
-      cancelFollow();
-      window.removeEventListener('scroll', scrollHandler);
-      };
-      window.addEventListener('scroll', scrollHandler);
-
       const followElement = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
@@ -72,7 +65,6 @@ export default {
         instance.__followAnimation = requestAnimationFrame(followElement);
       } else {
         cancelFollow();
-        window.removeEventListener('scroll', scrollHandler);
       }
       };
 
@@ -81,7 +73,6 @@ export default {
       // Очищаем анимацию при закрытии | Clear the animation when closing
       instance.__animationTimer = this.timerManager.setTimeout(() => {
       cancelFollow();
-      window.removeEventListener('scroll', scrollHandler);
       }, instance.speed.open);
     }
 

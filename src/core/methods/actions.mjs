@@ -35,7 +35,54 @@ export default {
 
     // Прокрутка к элементу, если задано в опциях | Scroll to the element if set in the options
     if (instance.options.scrollTo) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      let startTime = null;
+      const duration = instance.speed.open;
+
+      // Функция для отмены анимации | Function to cancel animation
+      const cancelFollow = () => {
+      if (instance.__followAnimation) {
+        cancelAnimationFrame(instance.__followAnimation);
+        instance.__followAnimation = null;
+      }
+      };
+
+      // Очищаем предыдущую анимацию если она есть | Clear the previous animation if it exists
+      cancelFollow();
+
+      // Обработчик прокрутки для отмены анимации | Scroll handler to cancel animation
+      const scrollHandler = () => {
+      cancelFollow();
+      window.removeEventListener('scroll', scrollHandler);
+      };
+      window.addEventListener('scroll', scrollHandler);
+
+      const followElement = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+
+      const elementRect = instance.$current.getBoundingClientRect();
+      const offset = instance.options.scrollOffset || 0;
+
+      window.scrollTo({
+        top: window.scrollY + elementRect.top - offset,
+        behavior: 'auto'
+      });
+
+      if (elapsed < duration) {
+        instance.__followAnimation = requestAnimationFrame(followElement);
+      } else {
+        cancelFollow();
+        window.removeEventListener('scroll', scrollHandler);
+      }
+      };
+
+      instance.__followAnimation = requestAnimationFrame(followElement);
+
+      // Очищаем анимацию при закрытии | Clear the animation when closing
+      instance.__animationTimer = this.timerManager.setTimeout(() => {
+      cancelFollow();
+      window.removeEventListener('scroll', scrollHandler);
+      }, instance.speed.open);
     }
 
     // Применение эффектов открытия, если они заданы | Apply opening effects if set

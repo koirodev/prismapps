@@ -89,7 +89,7 @@ export class DOMManager {
       el.classList.remove(this.instance.options.activeClass);
       this.instance.$hidden.classList.add(this.instance.options.openedClass);
       this.instance.on('afterInit', () => {
-        this.instance.open(el);
+        this.instance.open(el, false);
       });
     } else {
       this.instance.opened = false;

@@ -16,7 +16,7 @@ function processAccordions(nestedAccordions, rootAccordions, getInstance, open) 
       el.style.setProperty('--prismium-speed', '0ms');
 
       // Открываем аккордеон | Open accordion
-      open(el);
+      open(el, false);
       instance.iconManager?.updateIcon('open');
 
       // Сразу восстанавливаем скорость | Restore speed immediately
@@ -31,7 +31,7 @@ function processAccordions(nestedAccordions, rootAccordions, getInstance, open) 
   rootAccordions.forEach(el => {
     const instance = getInstance(el);
     if (instance) {
-      open(el);
+      open(el, false);
       instance.iconManager?.updateIcon('open');
     }
   });

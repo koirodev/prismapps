@@ -360,7 +360,7 @@ class Prismium {
     if (instance.opened) {
       instance.close(el);
     } else {
-      instance.open(el);
+      instance.open(el, true);
     }
   }
 
@@ -372,7 +372,7 @@ class Prismium {
     if (instance.opened) {
       instance.close(el);
     } else {
-      instance.open(el);
+      instance.open(el, true);
     }
   }
 }

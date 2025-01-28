@@ -48,7 +48,7 @@ describe('Prismium Core', () => {
 
     it('should open and close correctly', () => {
       const el = document.querySelector('[data-prismium]');
-      prismium.open(el);
+      prismium.open(el, true);
       assert.ok(prismium.opened);
       prismium.close(el);
       assert.ok(!prismium.opened);
@@ -149,7 +149,7 @@ describe('Prismium Core', () => {
           }
         });
 
-        newPrismium.open(el);
+        newPrismium.open(el, true);
         done();
       } catch (error) {
         done(error);

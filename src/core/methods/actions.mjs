@@ -1,5 +1,5 @@
 export default {
-  open(el) {
+  open(el, scrollTo = false) {
     // Проверка, является ли el строкой, и если да, то получение элемента | Check if el is a string and get the element if it is
     if (typeof el === 'string') {
       el = document.querySelector(el);
@@ -34,45 +34,48 @@ export default {
     }
 
     // Прокрутка к элементу, если задано в опциях | Scroll to the element if set in the options
-    if (instance.options.scrollTo) {
+    // scrollTo - флаг, который показывает, что нужно прокрутить к элементу | scrollTo - a flag that indicates that you need to scroll to the element
+    // сделано для предотвращения прокрутки к элементу при открытии всех элементов | done to prevent scrolling to the element when opening all elements
+    // или при открытии при загрузке страницы | or when opening when the page is loaded
+    if (instance.options.scrollTo && scrollTo) {
       let startTime = null;
       const duration = instance.speed.open;
 
       // Функция для отмены анимации | Function to cancel animation
       const cancelFollow = () => {
-      if (instance.__followAnimation) {
-        cancelAnimationFrame(instance.__followAnimation);
-        instance.__followAnimation = null;
-      }
+        if (instance.__followAnimation) {
+          cancelAnimationFrame(instance.__followAnimation);
+          instance.__followAnimation = null;
+        }
       };
 
       // Очищаем предыдущую анимацию если она есть | Clear the previous animation if it exists
       cancelFollow();
 
       const followElement = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
 
-      const elementRect = instance.$current.getBoundingClientRect();
-      const offset = instance.options.scrollOffset || 0;
+        const elementRect = instance.$current.getBoundingClientRect();
+        const offset = instance.options.scrollOffset || 0;
 
-      window.scrollTo({
-        top: window.scrollY + elementRect.top - offset,
-        behavior: 'auto'
-      });
+        window.scrollTo({
+          top: window.scrollY + elementRect.top - offset,
+          behavior: 'auto'
+        });
 
-      if (elapsed < duration) {
-        instance.__followAnimation = requestAnimationFrame(followElement);
-      } else {
-        cancelFollow();
-      }
+        if (elapsed < duration) {
+          instance.__followAnimation = requestAnimationFrame(followElement);
+        } else {
+          cancelFollow();
+        }
       };
 
       instance.__followAnimation = requestAnimationFrame(followElement);
 
       // Очищаем анимацию при закрытии | Clear the animation when closing
       instance.__animationTimer = this.timerManager.setTimeout(() => {
-      cancelFollow();
+        cancelFollow();
       }, instance.speed.open);
     }
 

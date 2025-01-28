@@ -1,4 +1,4 @@
-import { PrismiumError } from "../errors/PrismiumError.mjs";
+import { PrismiumError } from '../errors/PrismiumError.mjs';
 
 export class DOMManager {
   // Настройка DOM-элемента | Setup DOM element
@@ -15,15 +15,15 @@ export class DOMManager {
   // Проверка валидности элемента | Validate element
   validateElement(el) {
     if (!el) {
-      throw new PrismiumError("Element is required");
+      throw new PrismiumError('Element is required');
     }
 
     if (!(el instanceof Element)) {
-      throw new PrismiumError("Invalid element type. Expected HTMLElement");
+      throw new PrismiumError('Invalid element type. Expected HTMLElement');
     }
 
     if (!el.children || !el.children.length) {
-      throw new PrismiumError("Element must have children");
+      throw new PrismiumError('Element must have children');
     }
   }
 
@@ -35,7 +35,7 @@ export class DOMManager {
     let hidden;
 
     if (!content || !current) {
-      throw new Error("Required elements not found");
+      throw new Error('Required elements not found');
     }
 
     this.instance.$content = content;
@@ -44,7 +44,7 @@ export class DOMManager {
     if (content.parentElement === content.closest(this.instance.options.hiddenSelector)) {
       hidden = content.parentElement;
     } else {
-      hidden = document.createElement("div");
+      hidden = document.createElement('div');
       hidden.appendChild(content);
       el.appendChild(hidden);
     }
@@ -61,10 +61,10 @@ export class DOMManager {
 
   // Установка классов | Set classes
   setClasses(el) {
-    el.classList.add("prismium");
-    this.instance.$current.classList.add("prismium__current");
-    this.instance.$content.classList.add("prismium__content");
-    this.instance.$hidden.classList.add("prismium__hidden");
+    el.classList.add('prismium');
+    this.instance.$current.classList.add('prismium__current');
+    this.instance.$content.classList.add('prismium__content');
+    this.instance.$hidden.classList.add('prismium__hidden');
   }
 
   // Установка темы | Set theme
@@ -73,7 +73,7 @@ export class DOMManager {
     if (theme) {
       el.classList.add(`prismium_${theme}`);
 
-      if (typeof theme === "object") {
+      if (typeof theme === 'object') {
         Object.entries(theme).forEach(([key, value]) => {
           if (value) {
             el.classList.add(`prismium_${key}`);
@@ -88,7 +88,7 @@ export class DOMManager {
     if (el.classList.contains(this.instance.options.activeClass)) {
       el.classList.remove(this.instance.options.activeClass);
       this.instance.$hidden.classList.add(this.instance.options.openedClass);
-      this.instance.on("afterInit", () => {
+      this.instance.on('afterInit', () => {
         this.instance.open(el);
       });
     } else {

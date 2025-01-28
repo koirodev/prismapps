@@ -17,16 +17,16 @@ export class IconManager {
     
     if (!this.icon.type || !this.icon.open || !this.icon.close) return;
 
-    if (this.icon.type === "single") {
-      const useTag = this.$icons[0].querySelector("use");
+    if (this.icon.type === 'single') {
+      const useTag = this.$icons[0].querySelector('use');
       if (!useTag) return;
       
-      const icon = state === "open" ? this.icon.close : this.icon.open;
-      useTag.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", `${this.instance.options.spritePath}#${icon}`);
+      const icon = state === 'open' ? this.icon.close : this.icon.open;
+      useTag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${this.instance.options.spritePath}#${icon}`);
     }
 
-    if (this.icon.type === "multiple") {
-      const [show, hide] = state === "open" 
+    if (this.icon.type === 'multiple') {
+      const [show, hide] = state === 'open' 
         ? [this.icon.close, this.icon.open]
         : [this.icon.open, this.icon.close];
 
@@ -40,31 +40,31 @@ export class IconManager {
     if (!this.$icons || !this.$icons.length) return;
 
     this.icon = {
-      type: this.$icons.length > 1 ? "multiple" : "single",
-      hiddenClass: "prismium__icon_hidden"
+      type: this.$icons.length > 1 ? 'multiple' : 'single',
+      hiddenClass: 'prismium__icon_hidden'
     };
 
-    if (this.icon.type === "single") {
+    if (this.icon.type === 'single') {
       const icon = this.$icons[0];
       this.icon.spritePath = this.instance.options.spritePath;
 
-      let iconList = icon.getAttribute(this.instance.options.iconAttribute).replace(/^\[|\]$/g, "");
-      const iconArray = iconList.split(",").map(i => i.trim());
+      let iconList = icon.getAttribute(this.instance.options.iconAttribute).replace(/^\[|\]$/g, '');
+      const iconArray = iconList.split(',').map(i => i.trim());
 
       [this.icon.open, this.icon.close = iconArray[0]] = iconArray;
     }
 
-    if (this.icon.type === "multiple") {
+    if (this.icon.type === 'multiple') {
       this.$icons.forEach((icon) => {
         const iconType = icon.getAttribute(this.instance.options.iconAttribute);
         
-        if (iconType === "open") {
+        if (iconType === 'open') {
           this.icon.open = icon;
-        } else if (iconType === "close") {
+        } else if (iconType === 'close') {
           this.icon.close = icon;
           icon.classList.add(this.icon.hiddenClass);
         } else {
-          icon.style.display = "none";
+          icon.style.display = 'none';
         }
       });
 
@@ -75,8 +75,8 @@ export class IconManager {
     }
 
     this.$icons.forEach(icon => {
-      icon.classList.add("prismium__icon");
-      icon.addEventListener("click", e => e.preventDefault());
+      icon.classList.add('prismium__icon');
+      icon.addEventListener('click', e => e.preventDefault());
     });
   }
 }

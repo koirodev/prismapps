@@ -2,7 +2,7 @@
 export class PrismiumError extends Error {
   constructor(message, originalError) {
     super(message);
-    this.name = "PrismiumError";
+    this.name = 'PrismiumError';
     this.originalError = originalError;
   }
 }

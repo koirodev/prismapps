@@ -1,7 +1,7 @@
-import sourcemaps from "gulp-sourcemaps";
-import header from "gulp-header";
-import rename from "gulp-rename";
-import esbuild from "gulp-esbuild";
+import sourcemaps from 'gulp-sourcemaps';
+import header from 'gulp-header';
+import rename from 'gulp-rename';
+import esbuild from 'gulp-esbuild';
 
 export default function (gulp, config, banner) {
   function processJs(isMinified = false) {
@@ -17,10 +17,10 @@ export default function (gulp, config, banner) {
       .pipe(esbuild({
         entryPoints: srcGlobs,
         bundle: true,
-        format: "iife",
-        globalName: "Prismium",
+        format: 'iife',
+        globalName: 'Prismium',
         minify: isMinified,
-        loader: { ".mjs": "js" },
+        loader: { '.mjs': 'js' },
         banner: {
           js: '(() => {',
         },
@@ -29,11 +29,11 @@ export default function (gulp, config, banner) {
         }
       }))
       .pipe(rename({
-        suffix: isMinified ? ".min" : "",
-        extname: ".js"
+        suffix: isMinified ? '.min' : '',
+        extname: '.js'
       }))
       .pipe(header(banner))
-      .pipe(sourcemaps.write("."))
+      .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(`${config.root}/dist`))
   }
 
@@ -43,7 +43,7 @@ export default function (gulp, config, banner) {
       .pipe(gulp.dest(`${config.root}/dist`))
   }
 
-  gulp.task("js:process", () => processJs(false));
-  gulp.task("js:process:min", () => processJs(true));
-  gulp.task("js:process:modules", () => processModules());
+  gulp.task('js:process', () => processJs(false));
+  gulp.task('js:process:min', () => processJs(true));
+  gulp.task('js:process:modules', () => processModules());
 }

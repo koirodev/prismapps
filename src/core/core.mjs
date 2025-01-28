@@ -1,16 +1,16 @@
-import { PrismiumError } from "./errors/PrismiumError.mjs";
-import { deepMerge } from "../utils/deepMerge.mjs";
+import { PrismiumError } from './errors/PrismiumError.mjs';
+import { deepMerge } from '../utils/deepMerge.mjs';
 
-import { DOMManager } from "./managers/DOMManager.mjs";
-import { IconManager } from "./managers/IconManager.mjs";
-import { TimerManager } from "./managers/TimerManager.mjs";
+import { DOMManager } from './managers/DOMManager.mjs';
+import { IconManager } from './managers/IconManager.mjs';
+import { TimerManager } from './managers/TimerManager.mjs';
 
-import eventsEmitter from "./methods/events-emitter.mjs";
-import actions from "./methods/actions.mjs";
-import batchOperations from "./methods/batch-operations.mjs";
-import destroy from "./methods/destroy.mjs";
+import eventsEmitter from './methods/events-emitter.mjs';
+import actions from './methods/actions.mjs';
+import batchOperations from './methods/batch-operations.mjs';
+import destroy from './methods/destroy.mjs';
 
-import defaultOptions from "./options.mjs";
+import defaultOptions from './options.mjs';
 
 // Прототипы методов | Method prototypes
 const prototypes = {
@@ -32,7 +32,7 @@ class Prismium {
     }
 
     if (!module || !module.name) {
-      throw new PrismiumError("Module must have a name");
+      throw new PrismiumError('Module must have a name');
     }
 
     this.__modules__.set(module.name, module);
@@ -45,7 +45,7 @@ class Prismium {
     // Проверка аргументов конструктора | Check constructor arguments
     if (args.length === 1
       && args[0].constructor
-      && Object.prototype.toString.call(args[0]).slice(8, -1) === "Object") {
+      && Object.prototype.toString.call(args[0]).slice(8, -1) === 'Object') {
       options = args[0];
     } else {
       [el, options] = args;
@@ -66,7 +66,7 @@ class Prismium {
     }
 
     // Обработка строкового селектора | Handle string selector
-    if (this.el && typeof this.el === "string") {
+    if (this.el && typeof this.el === 'string') {
       const elements = document.querySelectorAll(this.el);
       const prismiumArray = Array.from(elements).map(el => {
         // Проверяем, есть ли уже инициализированный экземпляр | Check if instance is already initialized
@@ -86,8 +86,8 @@ class Prismium {
           }
 
           const multiInstanceMethods = [
-            "on", "once", "onAny", "off",
-            "offAny", "emit", "init", "destroy",
+            'on', 'once', 'onAny', 'off',
+            'offAny', 'emit', 'init', 'destroy',
           ];
 
           if (multiInstanceMethods.includes(prop)) {
@@ -99,7 +99,7 @@ class Prismium {
             };
           }
 
-          if (typeof target[0][prop] === "function") {
+          if (typeof target[0][prop] === 'function') {
             return target[0][prop].bind(target[0]);
           }
 
@@ -135,7 +135,7 @@ class Prismium {
     // Установка модулей перед монтированием и инициализацией | Setup modules before mounting and initializing
     const moduleSetupPromise = Promise.resolve().then(() => {
       Prismium.__modules__.forEach((module, name) => {
-        if (typeof module.install === "function") {
+        if (typeof module.install === 'function') {
           try {
             module.install(this);
             this.__modules__.set(name, module);
@@ -163,14 +163,14 @@ class Prismium {
   // Монтирование элемента | Mount element
   mount(el) {
     if (!el) {
-      throw new PrismiumError("Element is required");
+      throw new PrismiumError('Element is required');
     }
 
     if (!(el instanceof Element)) {
-      throw new PrismiumError("Invalid element type");
+      throw new PrismiumError('Invalid element type');
     }
 
-    if (typeof el === "string") {
+    if (typeof el === 'string') {
       const elements = document.querySelectorAll(el);
       if (elements.length > 1) {
         return Array.from(elements).map(el => new this.constructor({ ...this.options, el }));
@@ -189,15 +189,15 @@ class Prismium {
     }
 
     if (!el) {
-      throw new PrismiumError("Element is required");
+      throw new PrismiumError('Element is required');
     }
 
     if (!(el instanceof Element)) {
-      throw new PrismiumError("Invalid element type");
+      throw new PrismiumError('Invalid element type');
     }
 
     this.destroyed = false;
-    this.emit("beforeInit");
+    this.emit('beforeInit');
 
     // Проверяем существующий экземпляр
     const existingInstance = Prismium.__instances__.get(el) || el.__prismiumInstance__;
@@ -247,7 +247,7 @@ class Prismium {
       }
 
       // Настройка элемента | Setup element
-      el.classList.add("prismium");
+      el.classList.add('prismium');
 
       if (this.options.theme) {
         el.classList.add(`prismium_${this.options.theme}`);
@@ -262,15 +262,15 @@ class Prismium {
         this.bindEvents(el);
       }
 
-      if (typeof this.options.speed === "number") {
+      if (typeof this.options.speed === 'number') {
         this.setupSpeed(this.options.speed);
-      } else if (typeof this.options.speed === "object") {
+      } else if (typeof this.options.speed === 'object') {
         this.setupSpeed(this.options.speed.open, this.options.speed.close);
       }
 
       // Инициализация модулей | Initialize modules
       this.__modules__.forEach(module => {
-        if (typeof module.init === "function") {
+        if (typeof module.init === 'function') {
           module.init(this);
         }
       });
@@ -279,14 +279,14 @@ class Prismium {
       Prismium.__instances__.set(el, this);
 
       this.initialized = true;
-      this.el.classList.add("prismium-initialized");
-      this.emit("init");
+      this.el.classList.add('prismium-initialized');
+      this.emit('init');
     } catch (error) {
-      console.error("Initialization error:", error);
-      throw new PrismiumError("Initialization error", error);
+      console.error('Initialization error:', error);
+      throw new PrismiumError('Initialization error', error);
     }
 
-    this.emit("afterInit");
+    this.emit('afterInit');
     return this;
   }
 
@@ -298,7 +298,7 @@ class Prismium {
     };
 
     if (!this._isOpeningAll && !this._isOpeningEverything && !this._originalSpeed) {
-      this.el.style.setProperty("--prismium-speed", `${this.opened ? this.speed.close : this.speed.open}ms`);
+      this.el.style.setProperty('--prismium-speed', `${this.opened ? this.speed.close : this.speed.open}ms`);
     }
   }
 
@@ -318,7 +318,7 @@ class Prismium {
         }
       };
 
-      this.$current.addEventListener("click", handler);
+      this.$current.addEventListener('click', handler);
       this.$current._hasClickHandler = true;
       this.$current._clickHandler = handler;
     }

@@ -1,7 +1,7 @@
 export default {
   open(el) {
     // Проверка, является ли el строкой, и если да, то получение элемента | Check if el is a string and get the element if it is
-    if (typeof el === "string") {
+    if (typeof el === 'string') {
       el = document.querySelector(el);
     }
 
@@ -12,11 +12,11 @@ export default {
     const instance = this.getInstance(el);
     if (!instance || instance.opened) return;
 
-    instance.emit("beforeOpen");
+    instance.emit('beforeOpen');
 
     // Если есть менеджер эффектов и задан эффект, запускаем событие начала эффекта | If there is an effects manager and an effect is set, start the effect event
     if (instance.effectsManager && instance.options.effect) {
-      instance.emit("effectStart", "open");
+      instance.emit('effectStart', 'open');
     }
 
     instance.opened = true;
@@ -26,10 +26,10 @@ export default {
       el.classList.add(instance.options.activeClass);
       instance.$hidden.classList.add(instance.options.openedClass);
 
-      this.iconManager?.updateIcon("open");
+      this.iconManager?.updateIcon('open');
 
-      this.emit("open");
-      this.emit("afterOpen");
+      this.emit('open');
+      this.emit('afterOpen');
       return;
     }
 
@@ -99,19 +99,19 @@ export default {
     instance.__iconTimer && this.timerManager.clearTimeout(instance.__iconTimer);
     instance.__animationTimer && this.timerManager.clearTimeout(instance.__animationTimer);
     instance.__iconTimer = this.timerManager.setTimeout(() => {
-      this.iconManager?.updateIcon("open");
-      this.emit("open");
+      this.iconManager?.updateIcon('open');
+      this.emit('open');
     }, instance.speed.open / 2);
 
     instance.__animationTimer = this.timerManager.setTimeout(() => {
-      instance.$hidden.style.removeProperty("max-height");
+      instance.$hidden.style.removeProperty('max-height');
       instance.$hidden.classList.add(instance.options.openedClass);
 
-      if (typeof ScrollTrigger !== "undefined") {
+      if (typeof ScrollTrigger !== 'undefined') {
         ScrollTrigger.refresh();
       }
 
-      this.emit("afterOpen");
+      this.emit('afterOpen');
     }, instance.speed.open);
 
     // Применение эффектов открытия и установка таймера для завершения эффекта | Apply opening effects and set a timer to finish the effect
@@ -121,14 +121,14 @@ export default {
 
       instance.__effectTimer && instance.timerManager.clearTimeout(instance.__effectTimer);
       instance.__effectTimer = instance.timerManager.setTimeout(() => {
-        instance.emit("effectEnd", "open");
+        instance.emit('effectEnd', 'open');
       }, duration);
     }
   },
 
   close(el) {
     // Проверка, является ли el строкой, и если да, то получение элемента | Check if el is a string and get the element if it is
-    if (typeof el === "string") {
+    if (typeof el === 'string') {
       el = document.querySelector(el);
     }
 
@@ -139,11 +139,11 @@ export default {
     const instance = this.getInstance(el);
     if (!instance || !instance.opened) return;
 
-    instance.emit("beforeClose");
+    instance.emit('beforeClose');
 
     // Если есть менеджер эффектов и задан эффект, запускаем событие начала эффекта | If there is an effects manager and an effect is set, start the effect event
     if (instance.effectsManager && instance.options.effect) {
-      instance.emit("effectStart", "close");
+      instance.emit('effectStart', 'close');
     }
 
     instance.opened = false;
@@ -171,7 +171,7 @@ export default {
     instance.__animationTimer && this.timerManager.clearTimeout(instance.__animationTimer);
 
     requestAnimationFrame(() => {
-      instance.$hidden.style.maxHeight = "0px";
+      instance.$hidden.style.maxHeight = '0px';
 
       // Применение эффектов закрытия, если они заданы | Apply closing effects if set
       if (instance.effectsManager && instance.options.effect) {
@@ -179,28 +179,28 @@ export default {
       }
 
       setTimeout(() => {
-        this.iconManager?.updateIcon("close");
-        this.emit("close");
+        this.iconManager?.updateIcon('close');
+        this.emit('close');
       }, instance.speed.close / 2);
 
       instance.__animationTimer = this.timerManager.setTimeout(() => {
-        instance.$hidden.style.removeProperty("max-height");
+        instance.$hidden.style.removeProperty('max-height');
 
         // Очистка стилей у дочерних элементов | Clear styles for child elements
         if (instance.$content) {
           Array.from(instance.$content.children).forEach(child => {
-            child.style.removeProperty("transform");
-            child.style.removeProperty("opacity");
-            child.style.removeProperty("transition");
-            child.style.removeProperty("transform-origin");
+            child.style.removeProperty('transform');
+            child.style.removeProperty('opacity');
+            child.style.removeProperty('transition');
+            child.style.removeProperty('transform-origin');
           });
         }
 
         // Завершение эффекта закрытия и запуск события после закрытия | Finish the closing effect and start the after closing event
         if (instance.effectsManager && instance.options.effect) {
-          this.emit("effectEnd", "close");
+          this.emit('effectEnd', 'close');
         }
-        this.emit("afterClose");
+        this.emit('afterClose');
       }, instance.speed.close);
     });
   },

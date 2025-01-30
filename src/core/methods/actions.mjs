@@ -101,10 +101,6 @@ export default {
       instance.$hidden.style.removeProperty('max-height');
       instance.$hidden.classList.add(instance.options.openedClass);
 
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.refresh();
-      }
-
       this.emit('afterOpen');
     }, instance.speed.open);
 

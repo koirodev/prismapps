@@ -1,5 +1,5 @@
 export default {
-  open(el, scrollTo = false) {
+  open(el = this.el, scrollTo = false) {
     // Проверка, является ли el строкой, и если да, то получение элемента | Check if el is a string and get the element if it is
     if (typeof el === 'string') {
       el = document.querySelector(el);
@@ -120,7 +120,7 @@ export default {
     }
   },
 
-  close(el) {
+  close(el = this.el) {
     // Проверка, является ли el строкой, и если да, то получение элемента | Check if el is a string and get the element if it is
     if (typeof el === 'string') {
       el = document.querySelector(el);

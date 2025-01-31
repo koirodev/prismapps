@@ -198,20 +198,28 @@ export default {
         if (instance.effectsManager && instance.options.effect) {
           this.emit('effectEnd', 'close');
         }
+        
         this.emit('afterClose');
       }, instance.speed.close);
     });
   },
 
   toggle(el, scrollTo = false) {
+    if (el && typeof el === 'string') {
+      el = document.querySelector(el);
+    }
+
     const instance = this.getInstance(el);
+    
     if (!instance) return;
 
     // Используем контекст конкретного экземпляра | Use context of the specific instance
     if (instance.options.autoClose && instance.$container) {
       const openedItems = instance.$container.querySelectorAll(`.${instance.options.activeClass}`);
+
       openedItems.forEach(item => {
-        const itemInstance = item.prismium;
+        const itemInstance = instance.getInstance(item);
+
         if (itemInstance && !el.contains(item) && !item.contains(el)) {
           itemInstance.close(item);
         }
@@ -220,10 +228,13 @@ export default {
 
     if (instance.options.autoCloseNested) {
       const containerEl = instance.$current.closest(`.${instance.options.activeClass}`);
+
       if (containerEl) {
         const nestedItems = containerEl.querySelectorAll(`.${instance.options.activeClass}`);
+
         nestedItems.forEach(nested => {
-          const nestedInstance = nested.prismium;
+          const nestedInstance = instance.getInstance(nested);
+
           if (nestedInstance && nested !== el && !nested.contains(el)) {
             nestedInstance.close(nested);
           }

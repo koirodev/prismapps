@@ -212,7 +212,7 @@ class Prismium {
     this.emit('beforeInit');
 
     // Проверяем существующий экземпляр
-    const existingInstance = Prismium.__instances__.get(el) || el.prismium;
+    const existingInstance = Prismium.__instances__.get(el) || this.getInstance(el);
     if (existingInstance) {
       if (existingInstance.destroyed) {
         Object.assign(this, {
@@ -247,7 +247,7 @@ class Prismium {
       }
 
       // Если это существующий экземпляр, восстанавливаем его слушатели | If it's an existing instance, restore its listeners
-      const existingInstance = el.prismium;
+      const existingInstance = this.getInstance(el);
       if (existingInstance && existingInstance.eventsListeners) {
         this.eventsListeners = { ...existingInstance.eventsListeners };
         this.eventsAnyListeners = [...existingInstance.eventsAnyListeners];
@@ -345,10 +345,8 @@ Object.keys(prototypes).forEach((prototypeGroup) => {
   });
 });
 
-// Сделаем класс доступным глобально сначала
+// Добавление статических методов в глобальный объект | Add static methods to global object
 globalThis.Prismium = Prismium;
-
-// Теперь добавим публичные методы
 Object.assign(globalThis.Prismium, {
   openAll: Prismium.openAll.bind(Prismium),
   closeAll: Prismium.closeAll.bind(Prismium),

@@ -14,6 +14,9 @@ export default {
 
     instance.emit('beforeOpen');
 
+    // Установка скорости | Set the speed
+    instance.el.style.setProperty('--prismium-speed', `${instance.speed.open}ms`);
+
     // Если есть менеджер эффектов и задан эффект, запускаем событие начала эффекта | If there is an effects manager and an effect is set, start the effect event
     if (instance.effectsManager && instance.options.effect) {
       instance.emit('effectStart', 'open');
@@ -99,6 +102,7 @@ export default {
 
     instance.__animationTimer = this.timerManager.setTimeout(() => {
       instance.$hidden.style.removeProperty('max-height');
+      instance.el.style.removeProperty('--prismium-speed');
       instance.$hidden.classList.add(instance.options.openedClass);
 
       this.emit('afterOpen');
@@ -130,6 +134,9 @@ export default {
     if (!instance || !instance.opened) return;
 
     instance.emit('beforeClose');
+
+    // Установка скорости | Set the speed
+    instance.el.style.setProperty('--prismium-speed', `${instance.speed.close}ms`);
 
     // Если есть менеджер эффектов и задан эффект, запускаем событие начала эффекта | If there is an effects manager and an effect is set, start the effect event
     if (instance.effectsManager && instance.options.effect) {
@@ -175,6 +182,7 @@ export default {
 
       instance.__animationTimer = this.timerManager.setTimeout(() => {
         instance.$hidden.style.removeProperty('max-height');
+        instance.el.style.removeProperty('--prismium-speed');
 
         // Очистка стилей у дочерних элементов | Clear styles for child elements
         if (instance.$content) {
@@ -193,5 +201,44 @@ export default {
         this.emit('afterClose');
       }, instance.speed.close);
     });
+  },
+
+  toggle(el, scrollTo = false) {
+    const instance = this.getInstance(el);
+    if (!instance) return;
+
+    // Используем контекст конкретного экземпляра | Use context of the specific instance
+    if (instance.options.autoClose && instance.$container) {
+      const openedItems = instance.$container.querySelectorAll(`.${instance.options.activeClass}`);
+      openedItems.forEach(item => {
+        const itemInstance = item.prismium;
+        if (itemInstance && !el.contains(item) && !item.contains(el)) {
+          itemInstance.close(item);
+        }
+      });
+    }
+
+    if (instance.options.autoCloseNested) {
+      const containerEl = instance.$current.closest(`.${instance.options.activeClass}`);
+      if (containerEl) {
+        const nestedItems = containerEl.querySelectorAll(`.${instance.options.activeClass}`);
+        nestedItems.forEach(nested => {
+          const nestedInstance = nested.prismium;
+          if (nestedInstance && nested !== el && !nested.contains(el)) {
+            nestedInstance.close(nested);
+          }
+        });
+      }
+    }
+
+    if (instance.$current.closest(`.${instance.options.content}`)) {
+      return;
+    }
+
+    if (instance.opened) {
+      instance.close(el);
+    } else {
+      instance.open(el, scrollTo);
+    }
   },
 };

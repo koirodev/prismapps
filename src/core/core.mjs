@@ -32,6 +32,7 @@ class Prismium {
   static close = publicMethods.close;
   static closeAll = publicMethods.closeAll;
   static closeEverything = publicMethods.closeEverything;
+  static toggle = publicMethods.toggle;
 
   // Использовать модуль | Use a module
   static use(module) {
@@ -83,6 +84,7 @@ class Prismium {
         if (Prismium.__instances__.has(el)) {
           return Prismium.__instances__.get(el);
         }
+        
         const newOptions = deepMerge({}, options, { el }); // Удаляем init: true | Remove init: true
         const instance = new Prismium(newOptions);
         Prismium.__instances__.set(el, instance);
@@ -210,7 +212,7 @@ class Prismium {
     this.emit('beforeInit');
 
     // Проверяем существующий экземпляр
-    const existingInstance = Prismium.__instances__.get(el) || el.__prismiumInstance__;
+    const existingInstance = Prismium.__instances__.get(el) || el.prismium;
     if (existingInstance) {
       if (existingInstance.destroyed) {
         Object.assign(this, {
@@ -245,7 +247,7 @@ class Prismium {
       }
 
       // Если это существующий экземпляр, восстанавливаем его слушатели | If it's an existing instance, restore its listeners
-      const existingInstance = el.__prismiumInstance__;
+      const existingInstance = el.prismium;
       if (existingInstance && existingInstance.eventsListeners) {
         this.eventsListeners = { ...existingInstance.eventsListeners };
         this.eventsAnyListeners = [...existingInstance.eventsAnyListeners];
@@ -285,7 +287,6 @@ class Prismium {
         }
       });
 
-      el.__prismiumInstance__ = this;
       Prismium.__instances__.set(el, this);
 
       this.initialized = true;
@@ -304,19 +305,20 @@ class Prismium {
   // Настройка скорости | Setup speed
   setupSpeed(open, close) {
     this.speed = {
-      open: open || 350,
-      close: close || open || 350
+      open: open >= 0 ? open : 350,
+      close: close >= 0 ? close : (open >= 0 ? open : 350)
     };
-
-    if (!this._isOpeningAll && !this._isOpeningEverything && !this._originalSpeed) {
-      this.el.style.setProperty('--prismium-speed', `${this.opened ? this.speed.close : this.speed.open}ms`);
-    }
   }
 
   // Получить экземпляр | Get instance
   getInstance(el) {
     if (!el) return null;
-    return el.__prismiumInstance__;
+
+    if (el && typeof el === 'string') {
+      el = document.querySelector(el);
+    }
+
+    return el.prismium;
   }
 
   // Привязка событий | Bind events
@@ -325,65 +327,13 @@ class Prismium {
       const handler = (event) => {
         event.preventDefault();
         if (!this.destroyed) {
-          this.clickHandler(el);
+          this.toggle(el, true);
         }
       };
 
       this.$current.addEventListener('click', handler);
       this.$current._hasClickHandler = true;
       this.$current._clickHandler = handler;
-    }
-  }
-
-  // Обработчик кликов | Click handler
-  clickHandler(el) {
-    const instance = this.getInstance(el);
-    if (!instance) return;
-
-    // Используем контекст конкретного экземпляра | Use context of the specific instance
-    if (instance.options.autoClose && instance.$container) {
-      const openedItems = instance.$container.querySelectorAll(`.${instance.options.activeClass}`);
-      openedItems.forEach(item => {
-        const itemInstance = item.__prismiumInstance__;
-        if (itemInstance && !el.contains(item) && !item.contains(el)) {
-          itemInstance.close(item);
-        }
-      });
-    }
-
-    if (instance.options.autoCloseNested) {
-      const containerEl = instance.$current.closest(`.${instance.options.activeClass}`);
-      if (containerEl) {
-        const nestedItems = containerEl.querySelectorAll(`.${instance.options.activeClass}`);
-        nestedItems.forEach(nested => {
-          const nestedInstance = nested.__prismiumInstance__;
-          if (nestedInstance && nested !== el && !nested.contains(el)) {
-            nestedInstance.close(nested);
-          }
-        });
-      }
-    }
-
-    if (instance.$current.closest(`.${instance.options.content}`)) {
-      return;
-    }
-
-    if (instance.opened) {
-      instance.close(el);
-    } else {
-      instance.open(el, true);
-    }
-  }
-
-  // Переключение состояния | Toggle state
-  toggle(el) {
-    const instance = this.getInstance(el);
-    if (!instance) return;
-
-    if (instance.opened) {
-      instance.close(el);
-    } else {
-      instance.open(el, true);
     }
   }
 }

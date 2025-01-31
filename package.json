@@ -1,12 +1,11 @@
 {
   "name": "prismium-src",
-  "version": "4.0.0-beta.15",
+  "version": "4.0.0-beta.16",
   "description": "A modern JavaScript library of UI components. Accordion, filter, dropdown, tooltip in one package.",
   "type": "module",
   "scripts": {
     "build": "npx gulp",
-    "dev": "npx gulp dev",
-    "test": "npx mocha tests/**/*.test.mjs"
+    "dev": "npx gulp dev"
   },
   "repository": {
     "type": "git",

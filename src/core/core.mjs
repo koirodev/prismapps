@@ -9,6 +9,7 @@ import eventsEmitter from './methods/events-emitter.mjs';
 import actions from './methods/actions.mjs';
 import batchOperations from './methods/batch-operations.mjs';
 import destroy from './methods/destroy.mjs';
+import { publicMethods } from './methods/public-api.mjs';
 
 import defaultOptions from './options.mjs';
 
@@ -23,6 +24,14 @@ const prototypes = {
 class Prismium {
   static __modules__ = new Map();
   static __instances__ = new Map();
+
+  // Публичные методы как статические
+  static open = publicMethods.open;
+  static openAll = publicMethods.openAll;
+  static openEverything = publicMethods.openEverything;
+  static close = publicMethods.close;
+  static closeAll = publicMethods.closeAll;
+  static closeEverything = publicMethods.closeEverything;
 
   // Использовать модуль | Use a module
   static use(module) {
@@ -40,7 +49,7 @@ class Prismium {
   }
 
   constructor(...args) {
-    let el, options;
+    let el, options;    
 
     // Проверка аргументов конструктора | Check constructor arguments
     if (args.length === 1
@@ -60,7 +69,7 @@ class Prismium {
     if (el && !options.el) {
       options.el = el;
     }
-    
+
     if (!this.el) {
       this.el = options.el;
     }
@@ -69,6 +78,7 @@ class Prismium {
     if (this.el && typeof this.el === 'string') {
       const elements = document.querySelectorAll(this.el);
       const prismiumArray = Array.from(elements).map(el => {
+        
         // Проверяем, есть ли уже инициализированный экземпляр | Check if instance is already initialized
         if (Prismium.__instances__.has(el)) {
           return Prismium.__instances__.get(el);
@@ -385,7 +395,15 @@ Object.keys(prototypes).forEach((prototypeGroup) => {
   });
 });
 
-// Сделаем класс доступным глобально для методов | Make class globally available for methods
+// Сделаем класс доступным глобально сначала
 globalThis.Prismium = Prismium;
+
+// Теперь добавим публичные методы
+Object.assign(globalThis.Prismium, {
+  openAll: Prismium.openAll.bind(Prismium),
+  closeAll: Prismium.closeAll.bind(Prismium),
+  openEverything: Prismium.openEverything.bind(Prismium),
+  closeEverything: Prismium.closeEverything.bind(Prismium)
+});
 
 export default Prismium;

@@ -3,9 +3,11 @@ import { processAccordions, getElementDepth } from '../../utils/base.mjs';
 export default {
   // Открыть все аккордеоны в контейнере | Open all accordions in the container
   openAll(container, selector = '.prismium') {
-    if (typeof container === 'string') {
+    if (container && typeof container === 'string') {
       container = document.querySelector(container);
     }
+
+    if (!container) return;
 
     const accordions = Array.from(container.querySelectorAll(selector));
 
@@ -25,12 +27,12 @@ export default {
   },
 
   // Закрыть все аккордеоны в контейнере | Close all accordions in the container
-  closeAll(container) {
+  closeAll(container, selector = '.prismium') {
     if (typeof container === 'string') {
       container = document.querySelector(container);
     }
 
-    container.querySelectorAll(`.${this.options.activeClass}`).forEach((el) => {
+    container.querySelectorAll(`${selector}.${this.options.activeClass}`).forEach((el) => {
       const instance = this.getInstance(el);
       this.close(el);
       if (instance && instance.iconManager) {

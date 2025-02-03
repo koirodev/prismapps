@@ -1,4 +1,4 @@
-export const useHeaderScroll = () => {
+export default function () {
   const isHeaderHidden = ref(false);
 
   onMounted(() => {

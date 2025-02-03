@@ -1,4 +1,3 @@
-
 import CustomEase from 'gsap/CustomEase';
 
 export const gsapEase = {

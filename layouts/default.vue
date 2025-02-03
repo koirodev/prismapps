@@ -2,19 +2,21 @@
 
 <template>
   <Html class="page">
-    <Body class="page__body">
-      <main class="main">
-        <TheHeader />
 
-        <div class="wrapper">
-          <div class="wrapper__content">
-            <slot></slot>
+  <Body class="page__body">
+    <main class="main">
+      <TheHeader />
 
-            <TheFooter />
-          </div>
+      <div class="wrapper">
+        <div class="wrapper__content">
+          <slot></slot>
+
+          <TheFooter />
         </div>
-      </main>
-    </Body>
+      </div>
+    </main>
+  </Body>
+
   </Html>
 </template>
 

@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     'nuxt-typed-router',
     'nuxt-file-storage',
     'nuxt-svgo',
+    '@pinia/nuxt',
   ],
 
   svgo: {
@@ -44,6 +45,7 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/has-polyfill.client.js',
     '~/plugins/blank-polyfill.client.js',
+    '~/plugins/global-sizes.client.js',
   ],
 
   image: {

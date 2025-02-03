@@ -1,5 +1,3 @@
-import { get } from "@vueuse/core";
-
 export const animation = {
   SHORT: 0.2,
   DEFAULT: 0.35,

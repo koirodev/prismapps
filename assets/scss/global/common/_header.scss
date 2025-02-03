@@ -1,10 +1,16 @@
 .header {
-  padding: rem(15) 0;
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 5;
+
+  padding: rem(15) 0;
+  width: 100%;
+  height: fit-content;
+
   background-color: var(--bg-dark-secondary);
+
+  transition: transform var(--animation-default);
 
   & .container {
     width: 100%;
@@ -13,5 +19,9 @@
     align-items: flex-end;
     justify-content: flex-start;
     gap: rem(20);
+  }
+
+  &_hidden {
+    transform: translateY(-100%);
   }
 }

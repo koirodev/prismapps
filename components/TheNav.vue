@@ -1,5 +1,4 @@
 <script setup>
-import { ref, computed } from 'vue';
 import gsap from 'gsap';
 import { animation, gsapEase } from '@/config';
 

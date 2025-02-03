@@ -1,9 +1,17 @@
 <script setup>
-import { ref, computed } from 'vue';
+import useHeaderScroll from '@/composables/useHeaderScroll';
 
+const { isHeaderHidden } = useHeaderScroll();
+
+const { $globalSizes } = useNuxtApp();
 const versionPrefix = ref('v');
 const versionValue = ref('4.0.0');
 const version = computed(() => versionPrefix.value + versionValue.value);
+
+
+onMounted(() => {
+  $globalSizes.updateAllSizes();
+});
 
 onMounted(async () => {
   try {
@@ -16,7 +24,7 @@ onMounted(async () => {
   }
 });
 
-const burgerMenu = ref(true);
+const burgerMenu = ref(false);
 
 document.addEventListener('click', (event) => {
   if (burgerMenu.value && !event.target.closest('.burger-button') && !event.target.closest('.nav')) {
@@ -26,7 +34,10 @@ document.addEventListener('click', (event) => {
 </script>
 
 <template>
-  <header class="header">
+  <header :class="{
+    'header': true,
+    'header_hidden': isHeaderHidden
+  }">
     <div class="container">
       <div class="logo">
         <NuxtLink class="logo__image" to="/">

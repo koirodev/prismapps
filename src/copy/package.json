@@ -19,6 +19,7 @@
 
     "./modules": "./modules/index.mjs",
 
+    "./react": "./react/index.mjs",
     "./vue": "./vue/index.mjs"
   },
   "repository": {

@@ -16,6 +16,7 @@ node_modules
 dist
 demos
 demos_vue
+demos_react
 
 # Local env files
 .env

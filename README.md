@@ -13,7 +13,7 @@
 Prismium
 ========
 
-Prismium is a modern JavaScript library of UI components. Accordion, filter, dropdown, tooltip in one package.
+Modern JavaScript UI component library featuring smooth animated accordions, filters, dropdowns and tooltips. Seamlessly integrates with React, Vue and vanilla JavaScript.
 
 <h3 style="color: red;">ATTENTION!</h3>
 This is a <b style="color: red;">beta version</b>! There is only an accordion module and effects for it!

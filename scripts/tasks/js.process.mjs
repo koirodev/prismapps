@@ -9,7 +9,8 @@ export default function (gulp, config, banner) {
       `${config.root}/src/**/*.mjs`,
       `!${config.root}/src/core/**/*`,
       `!${config.root}/src/modules/**/*`,
-      `!${config.root}/src/utils/**/*`
+      `!${config.root}/src/utils/**/*`,
+      `!${config.root}/src/vue/**/*`
     ];
 
     return gulp.src(srcGlobs)

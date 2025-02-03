@@ -15,6 +15,7 @@ __MACOSX
 node_modules
 dist
 demos
+demos_vue
 
 # Local env files
 .env

@@ -15,7 +15,11 @@
     "./theme/dark-contrast": "./themes/dark-contrast.css",
     "./theme/forest": "./themes/forest.css",
     "./theme/ocean": "./themes/ocean.css",
-    "./theme/sunset": "./themes/sunset.css"
+    "./theme/sunset": "./themes/sunset.css",
+
+    "./modules": "./modules/index.mjs",
+
+    "./vue": "./vue/index.mjs"
   },
   "repository": {
     "type": "git",

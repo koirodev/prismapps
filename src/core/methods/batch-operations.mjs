@@ -1,11 +1,13 @@
-import { processAccordions, getElementDepth } from "../../utils/base.mjs";
+import { processAccordions, getElementDepth } from '../../utils/base.mjs';
 
 export default {
   // Открыть все аккордеоны в контейнере | Open all accordions in the container
-  openAll(container, selector = ".prismium") {
-    if (typeof container === "string") {
+  openAll(container, selector = '.prismium') {
+    if (container && typeof container === 'string') {
       container = document.querySelector(container);
     }
+
+    if (!container) return;
 
     const accordions = Array.from(container.querySelectorAll(selector));
 
@@ -16,8 +18,8 @@ export default {
       return depthB - depthA;
     });
 
-    const rootAccordions = accordions.filter(el => !el.closest(".prismium__content"));
-    const nestedAccordions = accordions.filter(el => el.closest(".prismium__content"));
+    const rootAccordions = accordions.filter(el => !el.closest('.prismium__content'));
+    const nestedAccordions = accordions.filter(el => el.closest('.prismium__content'));
 
     this._isOpeningAll = true;
     processAccordions(nestedAccordions, rootAccordions, this.getInstance.bind(this), this.open.bind(this));
@@ -25,22 +27,22 @@ export default {
   },
 
   // Закрыть все аккордеоны в контейнере | Close all accordions in the container
-  closeAll(container) {
-    if (typeof container === "string") {
+  closeAll(container, selector = '.prismium') {
+    if (typeof container === 'string') {
       container = document.querySelector(container);
     }
 
-    container.querySelectorAll(`.${this.options.activeClass}`).forEach((el) => {
+    container.querySelectorAll(`${selector}.${this.options.activeClass}`).forEach((el) => {
       const instance = this.getInstance(el);
       this.close(el);
       if (instance && instance.iconManager) {
-        instance.iconManager.updateIcon("close");
+        instance.iconManager.updateIcon('close');
       }
     });
   },
 
   // Открыть все аккордеоны на странице | Open all accordions on the page
-  openEverything(selector = ".prismium") {
+  openEverything(selector = '.prismium') {
     const accordions = Array.from(document.querySelectorAll(selector));
 
     // Сортировка аккордеонов по глубине | Sort accordions by depth
@@ -50,8 +52,8 @@ export default {
       return depthB - depthA;
     });
 
-    const rootAccordions = accordions.filter(el => !el.closest(".prismium__content"));
-    const nestedAccordions = accordions.filter(el => el.closest(".prismium__content"));
+    const rootAccordions = accordions.filter(el => !el.closest('.prismium__content'));
+    const nestedAccordions = accordions.filter(el => el.closest('.prismium__content'));
 
     this._isOpeningEverything = true;
     processAccordions(nestedAccordions, rootAccordions, this.getInstance.bind(this), this.open.bind(this));
@@ -59,8 +61,8 @@ export default {
   },
 
   // Закрыть все аккордеоны на странице | Close all accordions on the page
-  closeEverything() {
-    document.querySelectorAll(`.${this.options.activeClass}`).forEach((el) => {
+  closeEverything(selector = '.prismium') {
+    document.querySelectorAll(`${selector}.${this.options.activeClass}`).forEach((el) => {
       const instance = this.getInstance(el) || this;
 
       instance.close(el);

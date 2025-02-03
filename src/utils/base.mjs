@@ -13,16 +13,16 @@ function processAccordions(nestedAccordions, rootAccordions, getInstance, open) 
       const originalSpeed = { ...instance.speed };
 
       // Устанавливаем нулевую скорость | Set zero speed
-      el.style.setProperty("--prismium-speed", "0ms");
+      el.style.setProperty('--prismium-speed', '0ms');
 
       // Открываем аккордеон | Open accordion
-      open(el);
-      instance.iconManager?.updateIcon("open");
+      open(el, false);
+      instance.iconManager?.updateIcon('open');
 
       // Сразу восстанавливаем скорость | Restore speed immediately
       requestAnimationFrame(() => {
         instance.speed = originalSpeed;
-        el.style.setProperty("--prismium-speed", `${originalSpeed.open}ms`);
+        el.style.setProperty('--prismium-speed', `${originalSpeed.open}ms`);
       });
     }
   });
@@ -31,8 +31,8 @@ function processAccordions(nestedAccordions, rootAccordions, getInstance, open) 
   rootAccordions.forEach(el => {
     const instance = getInstance(el);
     if (instance) {
-      open(el);
-      instance.iconManager?.updateIcon("open");
+      open(el, false);
+      instance.iconManager?.updateIcon('open');
     }
   });
 }
@@ -44,7 +44,7 @@ function getElementDepth(el, container) {
 
   while (current && current !== container && current !== document.body) {
     current = current.parentElement;
-    if (current && current.matches(".prismium")) {
+    if (current && current.matches('.prismium')) {
       depth++;
     }
   }

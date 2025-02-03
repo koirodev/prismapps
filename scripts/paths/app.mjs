@@ -1,3 +1,3 @@
 export default [
-  "src/**/*.mjs",
+  'src/**/*.mjs',
 ]

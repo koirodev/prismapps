@@ -1,9 +1,9 @@
-import { isNode, isObject } from "./is.mjs";
+import { isNode, isObject } from './is.mjs';
 
 // Глубокое слияние объектов | Deep merge objects
 export function deepMerge(...sources) {
   const [target, ...rest] = sources;
-  const PROTECTED_KEYS = ["__proto__", "constructor", "prototype"];
+  const PROTECTED_KEYS = ['__proto__', 'constructor', 'prototype'];
 
   if (!target) return {};
 

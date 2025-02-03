@@ -1,12 +1,11 @@
 {
   "name": "prismium-src",
-  "version": "4.0.0-beta.1",
-  "description": "A modern JavaScript library of UI components. Accordion, filter, dropdown, tooltip in one package.",
+  "version": "4.0.0-beta.38",
+  "description": "Modern JavaScript UI component library featuring smooth animated accordions, filters, dropdowns and tooltips. Seamlessly integrates with React, Vue and vanilla JavaScript.",
   "type": "module",
   "scripts": {
     "build": "npx gulp",
-    "dev": "npx gulp dev",
-    "test": "npx mocha tests/**/*.test.mjs"
+    "dev": "npx gulp dev"
   },
   "repository": {
     "type": "git",
@@ -17,20 +16,20 @@
     "accordion",
     "dropdown",
     "select",
-    "tooltip",
     "filter",
     "javascript",
     "js",
     "native",
     "widget",
-    "transition",
+    "animation",
     "smooth",
-    "tree-vue",
+    "tree-view",
     "view-more",
     "vue",
     "react",
-    "UI",
-    "components"
+    "web-components",
+    "ui-components",
+    "ui-library"
   ],
   "author": "Vitaly Koiro",
   "license": "MIT",
@@ -54,7 +53,6 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-watch": "^5.0.1",
     "jsdom": "^25.0.1",
-    "mocha": "^11.0.1",
     "npm": "^10.9.0",
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",

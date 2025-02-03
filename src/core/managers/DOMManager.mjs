@@ -1,4 +1,4 @@
-import { PrismiumError } from "../errors/PrismiumError.mjs";
+import { PrismiumError } from '../errors/PrismiumError.mjs';
 
 export class DOMManager {
   // Настройка DOM-элемента | Setup DOM element
@@ -15,15 +15,15 @@ export class DOMManager {
   // Проверка валидности элемента | Validate element
   validateElement(el) {
     if (!el) {
-      throw new PrismiumError("Element is required");
+      throw new PrismiumError('Element is required');
     }
 
     if (!(el instanceof Element)) {
-      throw new PrismiumError("Invalid element type. Expected HTMLElement");
+      throw new PrismiumError('Invalid element type. Expected HTMLElement');
     }
 
     if (!el.children || !el.children.length) {
-      throw new PrismiumError("Element must have children");
+      throw new PrismiumError('Element must have children');
     }
   }
 
@@ -32,34 +32,39 @@ export class DOMManager {
     const content = el.querySelector(this.instance.options.contentSelector);
     const current = el.querySelector(this.instance.options.currentSelector);
 
+    let hidden;
+
     if (!content || !current) {
-      throw new Error("Required elements not found");
+      throw new Error('Required elements not found');
     }
 
     this.instance.$content = content;
     this.instance.$current = current;
 
-    const hidden = document.createElement("div");
-    hidden.classList.add("prismium__hidden");
-
-    hidden.appendChild(content);
-    el.appendChild(hidden);
+    if (content.parentElement === content.closest(this.instance.options.hiddenSelector)) {
+      hidden = content.parentElement;
+    } else {
+      hidden = document.createElement('div');
+      hidden.appendChild(content);
+      el.appendChild(hidden);
+    }
 
     this.instance.$hidden = hidden;
+    
     this.instance.$binding = this.instance.options.getParentHeight ? el : content;
-    this.instance.$container = el.closest(this.instance.options.containerSelectors.find(selector => el.closest(selector)));
 
-    if (el.closest(`[${this.instance.options.parentAttribute}]`)) {
-      this.instance.$parent = el.closest(`[${this.instance.options.parentAttribute}]`);
-    }
+    let containerSelectors = Array.isArray(this.instance.options.containerSelectors)
+    ? this.instance.options.containerSelectors
+    : [this.instance.options.containerSelectors];
+    this.instance.$container = el.closest(containerSelectors.find(selector => el.closest(selector)));
   }
 
   // Установка классов | Set classes
   setClasses(el) {
-    el.classList.add("prismium");
-    this.instance.$current.classList.add("prismium__current");
-    this.instance.$content.classList.add("prismium__content");
-    this.instance.$hidden.classList.add("prismium__hidden");
+    el.classList.add('prismium');
+    this.instance.$current.classList.add('prismium__current');
+    this.instance.$content.classList.add('prismium__content');
+    this.instance.$hidden.classList.add('prismium__hidden');
   }
 
   // Установка темы | Set theme
@@ -68,7 +73,7 @@ export class DOMManager {
     if (theme) {
       el.classList.add(`prismium_${theme}`);
 
-      if (typeof theme === "object") {
+      if (typeof theme === 'object') {
         Object.entries(theme).forEach(([key, value]) => {
           if (value) {
             el.classList.add(`prismium_${key}`);
@@ -82,18 +87,10 @@ export class DOMManager {
   handleInitialState(el) {
     if (el.classList.contains(this.instance.options.activeClass)) {
       el.classList.remove(this.instance.options.activeClass);
-      this.instance.opened = true;
       this.instance.$hidden.classList.add(this.instance.options.openedClass);
-
-      const height = this.instance.$binding.clientHeight;
-      if (height) {
-        this.instance.$hidden.style.maxHeight = `${height}px`;
-      }
-
-      setTimeout(() => {
-        this.instance.$hidden.style.removeProperty("max-height");
-        el.classList.add(this.instance.options.activeClass);
-      }, 0);
+      this.instance.on('afterInit', () => {
+        this.instance.open(el, false);
+      });
     } else {
       this.instance.opened = false;
     }

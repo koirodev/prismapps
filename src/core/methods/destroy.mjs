@@ -2,7 +2,7 @@ export default {
   destroy() {
     if (!this.initialized || this.destroyed) return this;
 
-    this.emit("beforeDestroy");
+    this.emit('beforeDestroy');
 
     try {
       const PrismiumClass = Object.getPrototypeOf(this).constructor;
@@ -22,17 +22,17 @@ export default {
       // Очистка основного элемента | Clean up main element
       if (currentEl) {
         currentEl.classList.remove(
-          "prismium",
+          'prismium',
           this.options.activeClass
         );
-        currentEl.style.removeProperty("--prismium-speed");
+        currentEl.style.removeProperty('--prismium-speed');
       }
 
       // Очистка текущего элемента | Clean up current element
       if (this.$current && this.$current.isConnected) {
-        this.$current.classList.remove("prismium__current");
+        this.$current.classList.remove('prismium__current');
         if (this.$current._clickHandler) {
-          this.$current.removeEventListener("click", this.$current._clickHandler);
+          this.$current.removeEventListener('click', this.$current._clickHandler);
           delete this.$current._clickHandler;
         }
         delete this.$current._hasClickHandler;
@@ -40,11 +40,11 @@ export default {
 
       // Очистка содержимого | Clean up content
       if (this.$content && this.$content.isConnected) {
-        this.$content.classList.remove("prismium__content");
+        this.$content.classList.remove('prismium__content');
         if (this.$content.children && this.$content.children.length > 0) {
           Array.from(this.$content.children).forEach(child => {
             if (child && child.isConnected) {
-              const stylesToRemove = ["transform", "opacity", "transition", "transform-origin"];
+              const stylesToRemove = ['transform', 'opacity', 'transition', 'transform-origin'];
               stylesToRemove.forEach(style => child.style.removeProperty(style));
             }
           });
@@ -56,10 +56,10 @@ export default {
         this.$icons.forEach(icon => {
           if (icon && icon.isConnected) {
             icon.classList.remove(
-              "prismium__icon",
-              "prismium__icon_hidden",
+              'prismium__icon',
+              'prismium__icon_hidden',
             );
-            icon.removeEventListener("click", e => e.preventDefault());
+            icon.removeEventListener('click', e => e.preventDefault());
           }
         });
       }
@@ -87,7 +87,7 @@ export default {
 
       // Очистка модулей (без полного удаления) | Clean up modules (without full deletion)
       this.__modules__.forEach(module => {
-        if (typeof module.destroy === "function") {
+        if (typeof module.destroy === 'function') {
           module.destroy(this);
         }
       });
@@ -97,7 +97,6 @@ export default {
       this.$content = null;
       this.$hidden = null;
       this.$container = null;
-      this.$parent = null;
       this.$icons = null;
       this.$binding = null;
       this.icon = null;
@@ -116,13 +115,13 @@ export default {
         this.el = currentEl;
       }
 
-      this.emit("destroy");
+      this.emit('destroy');
     } catch (error) {
-      console.error("Destroy error:", error);
+      console.error('Destroy error:', error);
       throw error;
     }
 
-    this.emit("afterDestroy");
+    this.emit('afterDestroy');
 
     return this;
   }

@@ -1,3 +1,3 @@
-import Prismium from "./core/core.mjs";
+import Prismium from './core/core.mjs';
 
 export default Prismium;

@@ -1,8 +1,8 @@
-import gulp from "gulp";
-import config from "./scripts/config.mjs";
+import gulp from 'gulp';
+import config from './scripts/config.mjs';
 
-import appPath from "./scripts/paths/app.mjs";
-import tasksPath from "./scripts/paths/tasks.mjs";
+import appPath from './scripts/paths/app.mjs';
+import tasksPath from './scripts/paths/tasks.mjs';
 
 const header = `
 /*
@@ -29,21 +29,21 @@ for (const taskPath of paths.tasks) {
 }
 
 const defaultTasks = [
-  "sass",
-  "sass:minified",
-  "js:process",
-  "js:process:min",
-  "js:process:modules",
-  "copy",
+  'sass',
+  'sass:minified',
+  'js:process',
+  'js:process:min',
+  'js:process:modules',
+  'copy',
 ];
 
-gulp.task("default", gulp.series(
-  "clean",
+gulp.task('default', gulp.series(
+  'clean',
   gulp.parallel(...defaultTasks)
 ));
 
-gulp.task("dev", gulp.series(
-  "clean",
+gulp.task('dev', gulp.series(
+  'clean',
   gulp.parallel(...defaultTasks),
-  "watch"
+  'watch'
 ));

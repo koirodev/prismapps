@@ -46,7 +46,7 @@ export const Prismium = defineComponent({
       default: () => ({}),
     },
   },
-  setup(props, { slots, emit }) {
+  setup(props, { slots, emit, attrs }) {
     const prismiumRef = ref(null);
     const instance = ref(null);
 
@@ -119,6 +119,7 @@ export const Prismium = defineComponent({
         {
           ref: prismiumRef,
           'data-prismium': '',
+          ...attrs,
           ...props.attributes,
         },
         slots.default?.()

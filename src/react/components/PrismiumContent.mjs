@@ -4,10 +4,15 @@ export const PrismiumContent = ({
   selector = 'div',
   attributes = {},
   children,
+  ...restProps
 }) => {
   return React.createElement(
     selector,
-    { 'data-prismium-content': '', ...attributes },
+    {
+      'data-prismium-content': '',
+      ...restProps,
+      ...attributes,
+    },
     children
   );
 };

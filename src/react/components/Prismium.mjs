@@ -114,7 +114,11 @@ export const Prismium = ({
 
   return React.createElement(
     'div',
-    { ref: containerRef, 'data-prismium': '' },
+    {
+      ref: containerRef,
+      'data-prismium': '',
+      ...extraProps,
+    },
     children
   );
 };

@@ -12,12 +12,13 @@ export const PrismiumContent = defineComponent({
       default: () => ({}),
     },
   },
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     return () =>
       h(
         props.selector,
         {
           'data-prismium-content': '',
+          ...attrs,
           ...props.attributes,
         },
         slots.default?.()

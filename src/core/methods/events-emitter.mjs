@@ -64,7 +64,8 @@ export default {
         self.eventsListeners[event].forEach((eventHandler, index) => {
           if (
             eventHandler === handler ||
-            (eventHandler.__emitterProxy && eventHandler.__emitterProxy === handler)
+            (eventHandler.__emitterProxy &&
+              eventHandler.__emitterProxy === handler)
           ) {
             self.eventsListeners[event].splice(index, 1);
           }

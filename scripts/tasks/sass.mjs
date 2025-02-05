@@ -16,12 +16,17 @@ export default function (gulp, config, banner) {
     sass({ silenceDeprecations: ['legacy-js-api', 'import'] }),
     postcssImport(),
     postcssMediaMinmax(),
-    postcssIsPseudoClass({ preserve: false, onComplexSelector: 'warning', onPseudoElement: 'warning' }),
-    autoprefixer()
-  ]
+    postcssIsPseudoClass({
+      preserve: false,
+      onComplexSelector: 'warning',
+      onPseudoElement: 'warning',
+    }),
+    autoprefixer(),
+  ];
 
   gulp.task('sass', function () {
-    return gulp.src([`${config.root}/src/**/*.scss`, `!${config.root}/src/**/_*.scss`])
+    return gulp
+      .src([`${config.root}/src/**/*.scss`, `!${config.root}/src/**/_*.scss`])
       .pipe(sourcemaps.init())
       .pipe(postcss(postcssPlugins))
       .on('error', notify.onError({ title: 'Style' }))
@@ -32,7 +37,8 @@ export default function (gulp, config, banner) {
   });
 
   gulp.task('sass:minified', function () {
-    return gulp.src([`${config.root}/src/**/*.scss`, `!${config.root}/src/**/_*.scss`])
+    return gulp
+      .src([`${config.root}/src/**/*.scss`, `!${config.root}/src/**/_*.scss`])
       .pipe(sourcemaps.init())
       .pipe(postcss(postcssPlugins))
       .on('error', notify.onError({ title: 'Style' }))

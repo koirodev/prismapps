@@ -41,7 +41,10 @@ export class DOMManager {
     this.instance.$content = content;
     this.instance.$current = current;
 
-    if (content.parentElement === content.closest(this.instance.options.hiddenSelector)) {
+    if (
+      content.parentElement ===
+      content.closest(this.instance.options.hiddenSelector)
+    ) {
       hidden = content.parentElement;
     } else {
       hidden = document.createElement('div');
@@ -50,13 +53,19 @@ export class DOMManager {
     }
 
     this.instance.$hidden = hidden;
-    
-    this.instance.$binding = this.instance.options.getParentHeight ? el : content;
 
-    let containerSelectors = Array.isArray(this.instance.options.containerSelectors)
-    ? this.instance.options.containerSelectors
-    : [this.instance.options.containerSelectors];
-    this.instance.$container = el.closest(containerSelectors.find(selector => el.closest(selector)));
+    this.instance.$binding = this.instance.options.getParentHeight
+      ? el
+      : content;
+
+    let containerSelectors = Array.isArray(
+      this.instance.options.containerSelectors
+    )
+      ? this.instance.options.containerSelectors
+      : [this.instance.options.containerSelectors];
+    this.instance.$container = el.closest(
+      containerSelectors.find((selector) => el.closest(selector))
+    );
   }
 
   // Установка классов | Set classes

@@ -2,7 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { deepMerge } from '../../utils/deepMerge.mjs';
 import PrismiumCore from '../../core/core.mjs';
 
-export const Prismium = ({ options = {}, modules = [], children, ...extraProps }) => {
+export const Prismium = ({
+  options = {},
+  modules = [],
+  children,
+  ...extraProps
+}) => {
   const containerRef = useRef(null);
   const instanceRef = useRef(null);
 
@@ -13,11 +18,20 @@ export const Prismium = ({ options = {}, modules = [], children, ...extraProps }
   const mergedOptions = deepMerge({}, options);
 
   const eventNames = [
-    'beforeInit', 'init', 'afterInit',
-    'beforeOpen', 'open', 'afterOpen',
-    'beforeClose', 'close', 'afterClose',
-    'beforeDestroy', 'destroy', 'afterDestroy',
-    'effectStart', 'effectEnd'
+    'beforeInit',
+    'init',
+    'afterInit',
+    'beforeOpen',
+    'open',
+    'afterOpen',
+    'beforeClose',
+    'close',
+    'afterClose',
+    'beforeDestroy',
+    'destroy',
+    'afterDestroy',
+    'effectStart',
+    'effectEnd',
   ];
 
   // Извлекаем события из отдельных пропсов
@@ -27,26 +41,50 @@ export const Prismium = ({ options = {}, modules = [], children, ...extraProps }
   }, {});
 
   const defaultEvents = {
-    beforeInit: () => mergedOptions.emit && mergedOptions.emit("beforeInit", instanceRef.current),
-    init: () => mergedOptions.emit && mergedOptions.emit("init", instanceRef.current),
-    afterInit: () => mergedOptions.emit && mergedOptions.emit("afterInit", instanceRef.current),
-    beforeOpen: () => mergedOptions.emit && mergedOptions.emit("beforeOpen", instanceRef.current),
-    open: () => mergedOptions.emit && mergedOptions.emit("open", instanceRef.current),
-    afterOpen: () => mergedOptions.emit && mergedOptions.emit("afterOpen", instanceRef.current),
-    beforeClose: () => mergedOptions.emit && mergedOptions.emit("beforeClose", instanceRef.current),
-    close: () => mergedOptions.emit && mergedOptions.emit("close", instanceRef.current),
-    afterClose: () => mergedOptions.emit && mergedOptions.emit("afterClose", instanceRef.current),
-    beforeDestroy: () => mergedOptions.emit && mergedOptions.emit("beforeDestroy", instanceRef.current),
-    destroy: () => mergedOptions.emit && mergedOptions.emit("destroy", instanceRef.current),
-    afterDestroy: () => mergedOptions.emit && mergedOptions.emit("afterDestroy", instanceRef.current),
-    effectStart: () => mergedOptions.emit && mergedOptions.emit("effectStart", instanceRef.current),
-    effectEnd: () => mergedOptions.emit && mergedOptions.emit("effectEnd", instanceRef.current)
+    beforeInit: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('beforeInit', instanceRef.current),
+    init: () =>
+      mergedOptions.emit && mergedOptions.emit('init', instanceRef.current),
+    afterInit: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('afterInit', instanceRef.current),
+    beforeOpen: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('beforeOpen', instanceRef.current),
+    open: () =>
+      mergedOptions.emit && mergedOptions.emit('open', instanceRef.current),
+    afterOpen: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('afterOpen', instanceRef.current),
+    beforeClose: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('beforeClose', instanceRef.current),
+    close: () =>
+      mergedOptions.emit && mergedOptions.emit('close', instanceRef.current),
+    afterClose: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('afterClose', instanceRef.current),
+    beforeDestroy: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('beforeDestroy', instanceRef.current),
+    destroy: () =>
+      mergedOptions.emit && mergedOptions.emit('destroy', instanceRef.current),
+    afterDestroy: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('afterDestroy', instanceRef.current),
+    effectStart: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('effectStart', instanceRef.current),
+    effectEnd: () =>
+      mergedOptions.emit &&
+      mergedOptions.emit('effectEnd', instanceRef.current),
   };
 
   const providedEvents = {
     ...(mergedOptions.on || {}),
     ...(mergedOptions.events || {}),
-    ...eventOverrides
+    ...eventOverrides,
   };
 
   const combinedEvents = { ...defaultEvents, ...providedEvents };
@@ -55,7 +93,10 @@ export const Prismium = ({ options = {}, modules = [], children, ...extraProps }
   useEffect(() => {
     if (containerRef.current) {
       try {
-        instanceRef.current = new PrismiumCore(containerRef.current, finalOptions);
+        instanceRef.current = new PrismiumCore(
+          containerRef.current,
+          finalOptions
+        );
       } catch (error) {
         console.error('Failed to initialize Prismium:', error);
       }
@@ -71,7 +112,11 @@ export const Prismium = ({ options = {}, modules = [], children, ...extraProps }
     };
   }, []);
 
-  return React.createElement('div', { ref: containerRef, 'data-prismium': '' }, children);
+  return React.createElement(
+    'div',
+    { ref: containerRef, 'data-prismium': '' },
+    children
+  );
 };
 
 export default Prismium;

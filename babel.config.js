@@ -2,11 +2,11 @@ module.exports = {
   // ...existing code...
   presets: [
     // ...existing presets...
-    "@babel/preset-react"
+    '@babel/preset-react',
   ],
   plugins: [
     // ...existing plugins...
-    "@babel/plugin-syntax-jsx"
-  ]
+    '@babel/plugin-syntax-jsx',
+  ],
   // ...existing code...
 };

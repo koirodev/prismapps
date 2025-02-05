@@ -1,3 +1,1 @@
-export default [
-  'src/**/*.mjs',
-]
+export default ['src/**/*.mjs'];

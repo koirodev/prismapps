@@ -10,8 +10,9 @@ export function deepMerge(...sources) {
   for (const source of rest) {
     if (!source || isNode(source)) continue;
 
-    const keys = Object.keys(Object(source))
-      .filter(key => !PROTECTED_KEYS.includes(key));
+    const keys = Object.keys(Object(source)).filter(
+      (key) => !PROTECTED_KEYS.includes(key)
+    );
 
     for (const key of keys) {
       const descriptor = Object.getOwnPropertyDescriptor(source, key);

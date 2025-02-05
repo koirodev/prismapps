@@ -4,9 +4,14 @@ function now() {
 }
 
 // Обработка аккордеонов | Process accordions
-function processAccordions(nestedAccordions, rootAccordions, getInstance, open) {
+function processAccordions(
+  nestedAccordions,
+  rootAccordions,
+  getInstance,
+  open
+) {
   // Открываем вложенные мгновенно | Open nested accordions instantly
-  nestedAccordions.forEach(el => {
+  nestedAccordions.forEach((el) => {
     const instance = getInstance(el);
     if (instance) {
       // Сохраняем оригинальную скорость | Save original speed
@@ -28,7 +33,7 @@ function processAccordions(nestedAccordions, rootAccordions, getInstance, open) 
   });
 
   // Открываем корневые с анимацией | Open root accordions with animation
-  rootAccordions.forEach(el => {
+  rootAccordions.forEach((el) => {
     const instance = getInstance(el);
     if (instance) {
       open(el, false);

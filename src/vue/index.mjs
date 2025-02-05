@@ -6,8 +6,8 @@ export { Prismium, PrismiumCurrent, PrismiumContent };
 
 export default {
   install(app) {
-    app.component("Prismium", Prismium);
-    app.component("PrismiumCurrent", PrismiumCurrent);
-    app.component("PrismiumContent", PrismiumContent);
-  }
+    app.component('Prismium', Prismium);
+    app.component('PrismiumCurrent', PrismiumCurrent);
+    app.component('PrismiumContent', PrismiumContent);
+  },
 };

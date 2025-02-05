@@ -1,32 +1,50 @@
-import { h, defineComponent, ref, provide, inject, onMounted, onBeforeUnmount, toRaw } from "vue";
+import {
+  h,
+  defineComponent,
+  ref,
+  provide,
+  inject,
+  onMounted,
+  onBeforeUnmount,
+  toRaw,
+} from 'vue';
 import { deepMerge } from '../../utils/deepMerge.mjs';
 import PrismiumCore from '../../core/core.mjs';
 
-export const PRISMIUM_INJECTION_KEY = "prismium";
+export const PRISMIUM_INJECTION_KEY = 'prismium';
 
 export const Prismium = defineComponent({
   name: 'Prismium',
   inheritAttrs: false,
   emits: [
-    "before-init", "init", "after-init",
-    "before-open", "open", "after-open",
-    "before-close", "close", "after-close",
-    "before-destroy", "destroy", "after-destroy",
-    "effect-start", "effect-end"
+    'before-init',
+    'init',
+    'after-init',
+    'before-open',
+    'open',
+    'after-open',
+    'before-close',
+    'close',
+    'after-close',
+    'before-destroy',
+    'destroy',
+    'after-destroy',
+    'effect-start',
+    'effect-end',
   ],
   props: {
     options: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     modules: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     attributes: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   setup(props, { slots, emit }) {
     const prismiumRef = ref(null);
@@ -36,39 +54,42 @@ export const Prismium = defineComponent({
       PrismiumCore.use(props.modules);
     }
 
-    const parentOptions = inject("prismiumParentOptions", {});
+    const parentOptions = inject('prismiumParentOptions', {});
     const mergedOptions = deepMerge({}, parentOptions, props.options);
-    provide("prismiumParentOptions", mergedOptions);
+    provide('prismiumParentOptions', mergedOptions);
 
     provide(PRISMIUM_INJECTION_KEY, {
       prismiumRef,
-      instance
+      instance,
     });
 
     onMounted(() => {
       if (prismiumRef.value) {
         const defaultEvents = {
-          beforeInit: () => emit("before-init", instance.value),
-          init: () => emit("init", instance.value),
-          afterInit: () => emit("after-init", instance.value),
+          beforeInit: () => emit('before-init', instance.value),
+          init: () => emit('init', instance.value),
+          afterInit: () => emit('after-init', instance.value),
 
-          beforeOpen: () => emit("before-open", instance.value),
-          open: () => emit("open", instance.value),
-          afterOpen: () => emit("after-open", instance.value),
+          beforeOpen: () => emit('before-open', instance.value),
+          open: () => emit('open', instance.value),
+          afterOpen: () => emit('after-open', instance.value),
 
-          beforeClose: () => emit("before-close", instance.value),
-          close: () => emit("close", instance.value),
-          afterClose: () => emit("after-close", instance.value),
+          beforeClose: () => emit('before-close', instance.value),
+          close: () => emit('close', instance.value),
+          afterClose: () => emit('after-close', instance.value),
 
-          beforeDestroy: () => emit("before-destroy", instance.value),
-          destroy: () => emit("destroy", instance.value),
-          afterDestroy: () => emit("after-destroy", instance.value),
+          beforeDestroy: () => emit('before-destroy', instance.value),
+          destroy: () => emit('destroy', instance.value),
+          afterDestroy: () => emit('after-destroy', instance.value),
 
-          effectStart: () => emit("effect-start", instance.value),
-          effectEnd: () => emit("effect-end", instance.value)
+          effectStart: () => emit('effect-start', instance.value),
+          effectEnd: () => emit('effect-end', instance.value),
         };
 
-        const providedEvents = { ...(mergedOptions.on || {}), ...(mergedOptions.events || {}) };
+        const providedEvents = {
+          ...(mergedOptions.on || {}),
+          ...(mergedOptions.events || {}),
+        };
         const combinedEvents = { ...defaultEvents, ...providedEvents };
 
         const finalOptions = { ...mergedOptions, on: combinedEvents };
@@ -92,10 +113,15 @@ export const Prismium = defineComponent({
       }
     });
 
-    return () => h("div", {
-      ref: prismiumRef,
-      "data-prismium": "",
-      ...props.attributes
-    }, slots.default?.());
-  }
+    return () =>
+      h(
+        'div',
+        {
+          ref: prismiumRef,
+          'data-prismium': '',
+          ...props.attributes,
+        },
+        slots.default?.()
+      );
+  },
 });

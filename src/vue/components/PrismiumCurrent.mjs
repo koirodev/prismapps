@@ -1,23 +1,28 @@
-import { h, defineComponent } from "vue";
+import { h, defineComponent } from 'vue';
 
 export const PrismiumCurrent = defineComponent({
   name: 'PrismiumCurrent',
   props: {
     selector: {
       type: String,
-      default: "div"
+      default: 'div',
     },
     attributes: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   setup(props, { slots }) {
-    return () => h(props.selector, {
-      "data-prismium-current": "",
-      ...props.attributes
-    }, slots.default?.());
-  }
+    return () =>
+      h(
+        props.selector,
+        {
+          'data-prismium-current': '',
+          ...props.attributes,
+        },
+        slots.default?.()
+      );
+  },
 });
 
 export default PrismiumCurrent;

@@ -15,7 +15,10 @@ export default {
     instance.emit('beforeOpen');
 
     // Установка скорости | Set the speed
-    instance.el.style.setProperty('--prismium-speed', `${instance.speed.open}ms`);
+    instance.el.style.setProperty(
+      '--prismium-speed',
+      `${instance.speed.open}ms`
+    );
 
     // Если есть менеджер эффектов и задан эффект, запускаем событие начала эффекта | If there is an effects manager and an effect is set, start the effect event
     if (instance.effectsManager && instance.options.effect) {
@@ -25,7 +28,10 @@ export default {
     instance.opened = true;
 
     // Если у элемента есть дочерние элементы и открываются все элементы, добавляем классы | If the element has child elements and all elements are opened, add classes
-    if (instance.hasChildren && (this._isOpeningAll || this._isOpeningEverything)) {
+    if (
+      instance.hasChildren &&
+      (this._isOpeningAll || this._isOpeningEverything)
+    ) {
       el.classList.add(instance.options.activeClass);
       instance.$hidden.classList.add(instance.options.openedClass);
 
@@ -64,7 +70,7 @@ export default {
 
         window.scrollTo({
           top: window.scrollY + elementRect.top - offset,
-          behavior: 'auto'
+          behavior: 'auto',
         });
 
         if (elapsed < duration) {
@@ -93,8 +99,10 @@ export default {
     el.classList.add(instance.options.activeClass);
 
     // Очистка таймеров и установка новых для иконок и анимации | Clear timers and set new ones for icons and animations
-    instance.__iconTimer && this.timerManager.clearTimeout(instance.__iconTimer);
-    instance.__animationTimer && this.timerManager.clearTimeout(instance.__animationTimer);
+    instance.__iconTimer &&
+      this.timerManager.clearTimeout(instance.__iconTimer);
+    instance.__animationTimer &&
+      this.timerManager.clearTimeout(instance.__animationTimer);
     instance.__iconTimer = this.timerManager.setTimeout(() => {
       this.iconManager?.updateIcon('open');
       this.emit('open');
@@ -113,7 +121,8 @@ export default {
       instance.effectsManager.applyOpenEffects(instance);
       const duration = instance.effectsManager.getEffectsDuration(instance);
 
-      instance.__effectTimer && instance.timerManager.clearTimeout(instance.__effectTimer);
+      instance.__effectTimer &&
+        instance.timerManager.clearTimeout(instance.__effectTimer);
       instance.__effectTimer = instance.timerManager.setTimeout(() => {
         instance.emit('effectEnd', 'open');
       }, duration);
@@ -136,7 +145,10 @@ export default {
     instance.emit('beforeClose');
 
     // Установка скорости | Set the speed
-    instance.el.style.setProperty('--prismium-speed', `${instance.speed.close}ms`);
+    instance.el.style.setProperty(
+      '--prismium-speed',
+      `${instance.speed.close}ms`
+    );
 
     // Если есть менеджер эффектов и задан эффект, запускаем событие начала эффекта | If there is an effects manager and an effect is set, start the effect event
     if (instance.effectsManager && instance.options.effect) {
@@ -147,8 +159,10 @@ export default {
 
     // Закрытие всех дочерних элементов, если они есть | Close all child elements if they exist
     if (instance.hasChildren) {
-      const nestedItems = el.querySelectorAll(`.${instance.options.activeClass}`);
-      nestedItems.forEach(nested => this.close(nested));
+      const nestedItems = el.querySelectorAll(
+        `.${instance.options.activeClass}`
+      );
+      nestedItems.forEach((nested) => this.close(nested));
     }
 
     // Применение эффектов закрытия, если они заданы | Apply closing effects if set
@@ -164,8 +178,10 @@ export default {
     el.classList.remove(instance.options.activeClass);
 
     // Очистка таймеров и установка новых для иконок и анимации | Clear timers and set new ones for icons and animations
-    instance.__iconTimer && this.timerManager.clearTimeout(instance.__iconTimer);
-    instance.__animationTimer && this.timerManager.clearTimeout(instance.__animationTimer);
+    instance.__iconTimer &&
+      this.timerManager.clearTimeout(instance.__iconTimer);
+    instance.__animationTimer &&
+      this.timerManager.clearTimeout(instance.__animationTimer);
 
     requestAnimationFrame(() => {
       instance.$hidden.style.maxHeight = '0px';
@@ -186,7 +202,7 @@ export default {
 
         // Очистка стилей у дочерних элементов | Clear styles for child elements
         if (instance.$content) {
-          Array.from(instance.$content.children).forEach(child => {
+          Array.from(instance.$content.children).forEach((child) => {
             child.style.removeProperty('transform');
             child.style.removeProperty('opacity');
             child.style.removeProperty('transition');
@@ -198,7 +214,7 @@ export default {
         if (instance.effectsManager && instance.options.effect) {
           this.emit('effectEnd', 'close');
         }
-        
+
         this.emit('afterClose');
       }, instance.speed.close);
     });
@@ -210,14 +226,16 @@ export default {
     }
 
     const instance = this.getInstance(el);
-    
+
     if (!instance) return;
 
     // Используем контекст конкретного экземпляра | Use context of the specific instance
     if (instance.options.autoClose && instance.$container) {
-      const openedItems = instance.$container.querySelectorAll(`.${instance.options.activeClass}`);
+      const openedItems = instance.$container.querySelectorAll(
+        `.${instance.options.activeClass}`
+      );
 
-      openedItems.forEach(item => {
+      openedItems.forEach((item) => {
         const itemInstance = instance.getInstance(item);
 
         if (itemInstance && !el.contains(item) && !item.contains(el)) {
@@ -227,12 +245,16 @@ export default {
     }
 
     if (instance.options.autoCloseNested) {
-      const containerEl = instance.$current.closest(`.${instance.options.activeClass}`);
+      const containerEl = instance.$current.closest(
+        `.${instance.options.activeClass}`
+      );
 
       if (containerEl) {
-        const nestedItems = containerEl.querySelectorAll(`.${instance.options.activeClass}`);
+        const nestedItems = containerEl.querySelectorAll(
+          `.${instance.options.activeClass}`
+        );
 
-        nestedItems.forEach(nested => {
+        nestedItems.forEach((nested) => {
           const nestedInstance = instance.getInstance(nested);
 
           if (nestedInstance && nested !== el && !nested.contains(el)) {

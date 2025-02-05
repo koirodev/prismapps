@@ -11,7 +11,7 @@ export class TimerManager {
       this.#timers.delete(timer);
       callback();
     }, delay);
-    
+
     this.#timers.add(timer);
     return timer;
   }
@@ -26,7 +26,7 @@ export class TimerManager {
 
   // Очистка всех таймеров | Clear all timers
   clearAll() {
-    this.#timers.forEach(timer => {
+    this.#timers.forEach((timer) => {
       clearTimeout(timer);
     });
     this.#timers.clear();

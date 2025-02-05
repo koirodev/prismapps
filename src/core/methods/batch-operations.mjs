@@ -18,11 +18,20 @@ export default {
       return depthB - depthA;
     });
 
-    const rootAccordions = accordions.filter(el => !el.closest('.prismium__content'));
-    const nestedAccordions = accordions.filter(el => el.closest('.prismium__content'));
+    const rootAccordions = accordions.filter(
+      (el) => !el.closest('.prismium__content')
+    );
+    const nestedAccordions = accordions.filter((el) =>
+      el.closest('.prismium__content')
+    );
 
     this._isOpeningAll = true;
-    processAccordions(nestedAccordions, rootAccordions, this.getInstance.bind(this), this.open.bind(this));
+    processAccordions(
+      nestedAccordions,
+      rootAccordions,
+      this.getInstance.bind(this),
+      this.open.bind(this)
+    );
     this._isOpeningAll = false;
   },
 
@@ -32,13 +41,15 @@ export default {
       container = document.querySelector(container);
     }
 
-    container.querySelectorAll(`${selector}.${this.options.activeClass}`).forEach((el) => {
-      const instance = this.getInstance(el);
-      this.close(el);
-      if (instance && instance.iconManager) {
-        instance.iconManager.updateIcon('close');
-      }
-    });
+    container
+      .querySelectorAll(`${selector}.${this.options.activeClass}`)
+      .forEach((el) => {
+        const instance = this.getInstance(el);
+        this.close(el);
+        if (instance && instance.iconManager) {
+          instance.iconManager.updateIcon('close');
+        }
+      });
   },
 
   // Открыть все аккордеоны на странице | Open all accordions on the page
@@ -52,21 +63,32 @@ export default {
       return depthB - depthA;
     });
 
-    const rootAccordions = accordions.filter(el => !el.closest('.prismium__content'));
-    const nestedAccordions = accordions.filter(el => el.closest('.prismium__content'));
+    const rootAccordions = accordions.filter(
+      (el) => !el.closest('.prismium__content')
+    );
+    const nestedAccordions = accordions.filter((el) =>
+      el.closest('.prismium__content')
+    );
 
     this._isOpeningEverything = true;
-    processAccordions(nestedAccordions, rootAccordions, this.getInstance.bind(this), this.open.bind(this));
+    processAccordions(
+      nestedAccordions,
+      rootAccordions,
+      this.getInstance.bind(this),
+      this.open.bind(this)
+    );
     this._isOpeningEverything = false;
   },
 
   // Закрыть все аккордеоны на странице | Close all accordions on the page
   closeEverything(selector = '.prismium') {
-    document.querySelectorAll(`${selector}.${this.options.activeClass}`).forEach((el) => {
-      const instance = this.getInstance(el) || this;
+    document
+      .querySelectorAll(`${selector}.${this.options.activeClass}`)
+      .forEach((el) => {
+        const instance = this.getInstance(el) || this;
 
-      instance.close(el);
-    });
+        instance.close(el);
+      });
   },
 
   // Закрыть вложенные аккордеоны | Close nested accordions

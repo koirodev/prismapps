@@ -20,8 +20,8 @@ const header = `
 
 const paths = {
   tasks: tasksPath,
-  app: appPath
-}
+  app: appPath,
+};
 
 for (const taskPath of paths.tasks) {
   const task = await import(taskPath);
@@ -37,13 +37,6 @@ const defaultTasks = [
   'copy',
 ];
 
-gulp.task('default', gulp.series(
-  'clean',
-  gulp.parallel(...defaultTasks)
-));
+gulp.task('default', gulp.series('clean', gulp.parallel(...defaultTasks)));
 
-gulp.task('dev', gulp.series(
-  'clean',
-  gulp.parallel(...defaultTasks),
-  'watch'
-));
+gulp.task('dev', gulp.series('clean', gulp.parallel(...defaultTasks), 'watch'));

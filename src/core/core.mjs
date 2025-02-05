@@ -25,7 +25,7 @@ class Prismium {
   static __modules__ = new Map();
   static __instances__ = new Map();
 
-  // Публичные методы как статические
+  // Публичные методы как статические | Public methods as static
   static open = publicMethods.open;
   static openAll = publicMethods.openAll;
   static openEverything = publicMethods.openEverything;
@@ -37,7 +37,7 @@ class Prismium {
   // Использовать модуль | Use a module
   static use(module) {
     if (Array.isArray(module)) {
-      module.forEach(m => this.use(m));
+      module.forEach((m) => this.use(m));
       return this;
     }
 
@@ -50,12 +50,14 @@ class Prismium {
   }
 
   constructor(...args) {
-    let el, options;    
+    let el, options;
 
     // Проверка аргументов конструктора | Check constructor arguments
-    if (args.length === 1
-      && args[0].constructor
-      && Object.prototype.toString.call(args[0]).slice(8, -1) === 'Object') {
+    if (
+      args.length === 1 &&
+      args[0].constructor &&
+      Object.prototype.toString.call(args[0]).slice(8, -1) === 'Object'
+    ) {
       options = args[0];
     } else {
       [el, options] = args;
@@ -78,13 +80,12 @@ class Prismium {
     // Обработка строкового селектора | Handle string selector
     if (this.el && typeof this.el === 'string') {
       const elements = document.querySelectorAll(this.el);
-      const prismiumArray = Array.from(elements).map(el => {
-        
+      const prismiumArray = Array.from(elements).map((el) => {
         // Проверяем, есть ли уже инициализированный экземпляр | Check if instance is already initialized
         if (Prismium.__instances__.has(el)) {
           return Prismium.__instances__.get(el);
         }
-        
+
         const newOptions = deepMerge({}, options, { el }); // Удаляем init: true | Remove init: true
         const instance = new Prismium(newOptions);
         Prismium.__instances__.set(el, instance);
@@ -98,13 +99,19 @@ class Prismium {
           }
 
           const multiInstanceMethods = [
-            'on', 'once', 'onAny', 'off',
-            'offAny', 'emit', 'init', 'destroy',
+            'on',
+            'once',
+            'onAny',
+            'off',
+            'offAny',
+            'emit',
+            'init',
+            'destroy',
           ];
 
           if (multiInstanceMethods.includes(prop)) {
             return (...args) => {
-              const results = target.map(instance => {
+              const results = target.map((instance) => {
                 return instance[prop].apply(instance, args);
               });
               return target;
@@ -116,7 +123,7 @@ class Prismium {
           }
 
           return target[0][prop];
-        }
+        },
       });
     }
 
@@ -185,7 +192,9 @@ class Prismium {
     if (typeof el === 'string') {
       const elements = document.querySelectorAll(el);
       if (elements.length > 1) {
-        return Array.from(elements).map(el => new this.constructor({ ...this.options, el }));
+        return Array.from(elements).map(
+          (el) => new this.constructor({ ...this.options, el })
+        );
       }
       el = elements[0];
     }
@@ -212,14 +221,15 @@ class Prismium {
     this.emit('beforeInit');
 
     // Проверяем существующий экземпляр
-    const existingInstance = Prismium.__instances__.get(el) || this.getInstance(el);
+    const existingInstance =
+      Prismium.__instances__.get(el) || this.getInstance(el);
     if (existingInstance) {
       if (existingInstance.destroyed) {
         Object.assign(this, {
           options: existingInstance.options,
           eventsListeners: existingInstance.eventsListeners,
           eventsAnyListeners: existingInstance.eventsAnyListeners,
-          __modules__: existingInstance.__modules__
+          __modules__: existingInstance.__modules__,
         });
 
         Prismium.__instances__.set(el, this);
@@ -281,7 +291,7 @@ class Prismium {
       }
 
       // Инициализация модулей | Initialize modules
-      this.__modules__.forEach(module => {
+      this.__modules__.forEach((module) => {
         if (typeof module.init === 'function') {
           module.init(this);
         }
@@ -306,7 +316,7 @@ class Prismium {
   setupSpeed(open, close) {
     this.speed = {
       open: open >= 0 ? open : 350,
-      close: close >= 0 ? close : (open >= 0 ? open : 350)
+      close: close >= 0 ? close : open >= 0 ? open : 350,
     };
   }
 
@@ -351,7 +361,7 @@ Object.assign(globalThis.Prismium, {
   openAll: Prismium.openAll.bind(Prismium),
   closeAll: Prismium.closeAll.bind(Prismium),
   openEverything: Prismium.openEverything.bind(Prismium),
-  closeEverything: Prismium.closeEverything.bind(Prismium)
+  closeEverything: Prismium.closeEverything.bind(Prismium),
 });
 
 export default Prismium;

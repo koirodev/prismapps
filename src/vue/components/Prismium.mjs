@@ -22,6 +22,10 @@ export const Prismium = defineComponent({
     modules: {
       type: Array,
       default: () => []
+    },
+    attributes: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props, { slots, emit }) {
@@ -90,7 +94,8 @@ export const Prismium = defineComponent({
 
     return () => h("div", {
       ref: prismiumRef,
-      "data-prismium": ""
+      "data-prismium": "",
+      ...props.attributes
     }, slots.default?.());
   }
 });

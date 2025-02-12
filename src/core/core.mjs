@@ -21,6 +21,10 @@ const prototypes = {
   destroy,
 };
 
+window.requestAnimationFrame = function (callback) {
+  return setTimeout(callback, 0);
+};
+
 class Prismium {
   static __modules__ = new Map();
   static __instances__ = new Map();

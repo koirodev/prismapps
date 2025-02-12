@@ -1,6 +1,6 @@
 {
   "name": "prismium-src",
-  "version": "4.0.0-beta.41",
+  "version": "4.0.0-beta.42",
   "description": "Modern JavaScript UI component library featuring smooth animated accordions, filters, dropdowns and tooltips. Seamlessly integrates with React, Vue and vanilla JavaScript.",
   "type": "module",
   "scripts": {

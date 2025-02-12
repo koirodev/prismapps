@@ -52,11 +52,10 @@ class Prismium {
   constructor(...args) {
     let el, options;
 
-    if (!window.requestAnimationFrame) {
-      window.requestAnimationFrame = function (callback) {
-        return setTimeout(callback, 0);
-      };
-    }
+    // Фикс для requestAnimationFrame в старых браузерах | Fix for requestAnimationFrame in old browsers
+    window.requestAnimationFrame = function (callback) {
+      return setTimeout(callback, 0);
+    };
 
     // Проверка аргументов конструктора | Check constructor arguments
     if (

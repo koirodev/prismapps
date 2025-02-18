@@ -25,7 +25,7 @@
   & .text {
     width: fit-content;
 
-    font: 500 rem(16)/1.4 var(--font-secondary);
+    font: 500 rem(16) / 1.4 var(--font-secondary);
   }
 }
 </style>

@@ -1,23 +1,19 @@
 <script setup></script>
 
 <template>
-  <Html class="page">
+  <Html class="page" lang="en">
+    <Body class="page__body">
+      <main class="main">
+        <TheHeader />
 
-  <Body class="page__body">
-    <main class="main">
-      <TheHeader />
+        <div class="wrapper">
+          <div class="wrapper__content">
+            <slot></slot>
 
-      <div class="wrapper">
-        <div class="wrapper__content">
-          <slot></slot>
-
-          <TheFooter />
+            <TheFooter />
+          </div>
         </div>
-      </div>
-    </main>
-  </Body>
-
+      </main>
+    </Body>
   </Html>
 </template>
-
-<style></style>

@@ -8,8 +8,8 @@ const props = defineProps({
   burgerMenu: {
     type: Boolean,
     required: false,
-    default: false
-  }
+    default: false,
+  },
 });
 
 const stars = computed(() => `${starsCount.value} ${starsText.value}`);
@@ -22,37 +22,40 @@ const resetNavForLargeScreen = () => {
       visibility: 'visible',
       pointerEvents: 'auto',
       opacity: 1,
-      scale: 1
+      scale: 1,
     });
   } else {
     gsap.set(nav.value, {
       visibility: props.burgerMenu ? 'visible' : 'hidden',
       pointerEvents: props.burgerMenu ? 'auto' : 'none',
       opacity: props.burgerMenu ? 1 : 0,
-      scale: props.burgerMenu ? 1 : 0
+      scale: props.burgerMenu ? 1 : 0,
     });
   }
 };
 
-watch(() => props.burgerMenu, (newValue) => {
-  if (window.innerWidth <= 700) {
-    gsap.set(nav.value, {
-      visibility: newValue ? 'visible' : 'hidden',
-      pointerEvents: newValue ? 'auto' : 'none'
-    });
+watch(
+  () => props.burgerMenu,
+  (newValue) => {
+    if (window.innerWidth <= 700) {
+      gsap.set(nav.value, {
+        visibility: newValue ? 'visible' : 'hidden',
+        pointerEvents: newValue ? 'auto' : 'none',
+      });
 
-    gsap.to(nav.value, {
-      opacity: newValue ? 1 : 0,
-      duration: animation.DEFAULT
-    });
+      gsap.to(nav.value, {
+        opacity: newValue ? 1 : 0,
+        duration: animation.DEFAULT,
+      });
 
-    gsap.to(nav.value, {
-      scale: newValue ? 1 : 0,
-      duration: animation.LONG,
-      ease: gsapEase.BOUNCE
-    });
+      gsap.to(nav.value, {
+        scale: newValue ? 1 : 0,
+        duration: animation.LONG,
+        ease: gsapEase.BOUNCE,
+      });
+    }
   }
-});
+);
 
 onMounted(() => {
   resetNavForLargeScreen();
@@ -65,7 +68,9 @@ onUnmounted(() => {
 
 onMounted(async () => {
   try {
-    const { data } = await useFetch('https://api.github.com/repos/koirodev/prismium');
+    const { data } = await useFetch(
+      'https://api.github.com/repos/koirodev/prismium'
+    );
     if (data.value) {
       starsCount.value = data.value.stargazers_count;
     }
@@ -76,36 +81,48 @@ onMounted(async () => {
 </script>
 
 <template>
-  <nav :class="{ 'nav': true, 'nav_show': burgerMenu }" ref="nav">
+  <nav :class="{ nav: true, nav_show: burgerMenu }" ref="nav">
     <ul class="nav__list">
       <li class="nav__item">
         <span class="nav__link text">Docs</span>
         <ul class="nav__list">
           <li class="nav__item nav__item_border">
-            <NuxtLink class="nav__link" to="/get-stated">Getting Started</NuxtLink>
+            <NuxtLink class="nav__link" to="/get-stated"
+              >Getting Started</NuxtLink
+            >
           </li>
-          <hr>
+          <hr />
           <li class="nav__item">
-            <NuxtLink class="nav__link" to="/prismium-api">Prismium Core / Api</NuxtLink>
+            <NuxtLink class="nav__link" to="/prismium-api"
+              >Prismium Core / Api</NuxtLink
+            >
           </li>
           <li class="nav__item">
-            <NuxtLink class="nav__link" to="/prismium-react">Prismium React</NuxtLink>
+            <NuxtLink class="nav__link" to="/prismium-react"
+              >Prismium React</NuxtLink
+            >
           </li>
           <li class="nav__item">
-            <NuxtLink class="nav__link" to="/prismium-vue">Prismium Vue</NuxtLink>
+            <NuxtLink class="nav__link" to="/prismium-vue"
+              >Prismium Vue</NuxtLink
+            >
           </li>
-          <hr>
+          <hr />
           <li class="nav__item nav__item_border">
             <NuxtLink class="nav__link" to="/changelog">Changelog</NuxtLink>
           </li>
         </ul>
       </li>
-      <hr>
+      <hr />
       <li class="nav__item">
         <span class="nav__link text">Demos</span>
       </li>
       <li class="nav__item">
-        <a class="nav__link nav__link_github" href="https://github.com/koirodev/prismium/" target="_blank">
+        <a
+          class="nav__link nav__link_github"
+          href="https://github.com/koirodev/prismium/"
+          target="_blank"
+        >
           <SvgGithub class="nav__icon" :fontControlled="false" filled />
           <span class="text">{{ stars }}</span>
         </a>
